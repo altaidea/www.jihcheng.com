@@ -1,3 +1,53 @@
+// 針對所有 Swiper 容器進行預載入優化
+.swiper {
+  // 1. 在 JS 執行前，防止內容溢出導致頁面寬度爆開
+  overflow: hidden;
+
+  // 初始狀態設為透明
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+  // 當 Swiper 初始化完成後（Swiper 會自動加上這個 class）
+  &.swiper-initialized {
+    opacity: 1;
+  }
+
+  // 2. 初始狀態隱藏，或給予固定高度防止高度塌陷
+  &:not(.swiper-initialized) {
+    .swiper-wrapper {
+      display: flex;       // 強制橫向排列
+      flex-wrap: nowrap;   // 不換行
+      overflow: hidden;    // 隱藏超出的部分
+    }
+
+    .swiper-slide {
+      flex-shrink: 0;      // 防止被壓縮
+    }
+  }
+}
+
+// --- 針對產品輪播 (Products Swiper) ---
+.products-swiper:not(.swiper-initialized) {
+  .swiper-slide {
+    // 根據你 JS 的設定 (slidesPerView: 2.5)，預設給它對應的寬度
+    width: calc(100% / 2.5); 
+    
+    @media (max-width: 1024px) { width: calc(100% / 1.5); }
+    @media (max-width: 576px) { width: 100%; }
+  }
+}
+
+// --- 針對最新消息 (News Swiper) ---
+.news-swiper:not(.swiper-initialized) {
+  .swiper-slide {
+    // 根據你 JS 的設定 (slidesPerView: 3)，預設寬度 33.33%
+    width: calc(100% / 3);
+
+    @media (max-width: 992px) { width: calc(100% / 2); }
+    @media (max-width: 576px) { width: 100%; }
+  }
+}
+
 .home{
 
   a {

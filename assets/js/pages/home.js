@@ -88,7 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
       nextEl: '.products-swiper-block .next-btn',
       prevEl: '.products-swiper-block .prev-btn',
     },
-    // autoplay: { delay: 3000, disableOnInteraction: false }
+    autoplay: { delay: 3000, disableOnInteraction: false },
+
+    // 防FOUC
+    on: {
+      afterInit: function() {
+        this.el.style.opacity = "1";
+      }
+    }
   });
 
   // 2. 型錄輪播 (卡片展開效果)
