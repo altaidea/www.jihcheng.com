@@ -1,0 +1,946 @@
+.home{
+
+  a {
+    display: inline-block; // 讓 a 具備寬高屬性，但只包裹內容
+    text-decoration: none; // 移除預設底線
+    line-height: 0;        /* 關鍵：消除行內元素底部的微小縫隙 */
+  }
+
+  .navbar{
+    a{
+      line-height: 1;
+    }
+    
+    @media (max-width: 768px){
+      .offcanvas.full-screen .nav-link{
+        margin: .5rem 0;
+      }
+    }
+  }
+
+  .more-btn{
+    @media (max-width: 576px) {
+      height: calc(60px * .7);
+      margin: 0 auto;
+    }
+  }
+
+  main{
+    // 共用部分 1.Swiper
+    .swiper-pagination{
+      @media (max-width: 576px) {
+        padding: 0 2rem;
+      }
+
+      .swiper-pagination-bullet{
+        width: 1rem;
+        height: 1rem;
+        margin: 0 .5rem;
+      }
+    }
+
+    // 共用部分 2.title
+    h2{
+      &.title{
+        font-size: 40px;
+        text-transform: uppercase;
+        color: $color-primary;
+        
+        position: relative;
+
+        font-family: $font-family-base;
+        font-weight: 900;
+
+        padding-left: 16px;
+
+        margin-bottom: 30px;
+
+        &::after{
+          position: absolute;
+          content: '';
+          width: 5px;
+          height: 90%;
+          background-color: $color-primary;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+        }
+      }
+    }
+
+    .container-fluid{
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    // 首頁 // 產品區塊
+    .products{
+      overflow-x: hidden;
+
+      .container-fluid{
+        padding-left: 8%;
+        padding-right: 0;
+
+        @media (max-width: 1440px) {
+          padding-left: 1.5rem;
+        }
+
+        @media (max-width: 1366px) {
+          padding-left: 8%;
+        }
+      }
+
+      @media (max-width: 576px) {
+        height: auto;
+
+        .container-fluid{
+          // 給一點左右間距，不要讓容器直接貼螢幕
+          padding-right: 24px;
+          padding-left: 24px;
+        }
+      }
+
+      .products-info-block{
+        padding-left: 6%;
+        padding-right: 5%;
+        padding-bottom: 1.5rem;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        @media (max-width: 1440px){
+          padding-left: 2%;
+          padding-right: 2%;
+
+          p{
+            font-size: 18px;
+          }
+        }
+
+        @media (max-width: 576px){
+          padding-right: 1rem;
+          padding-left: 1rem;
+          margin-bottom: 3rem;
+        }
+      }
+
+      .products-swiper-block{
+        position: relative;
+        padding-left: 46px;
+        
+        @media (max-width: 576px){
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        .custom-nav-btn-group{
+          position: absolute;
+          bottom: 1rem;
+          left: -1rem;
+          z-index: 9;
+
+          .custom-nav-btn {
+            /* 1. 圓形核心設定 */
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.2); // 半透明白
+            backdrop-filter: blur(10px); // 毛玻璃效果
+            border: 1px solid rgba($color-primary, 1);
+            border-radius: 50%;
+            
+            /* 2. 佈局與定位 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-50%);
+            z-index: 100; // 確保在遮罩與圖片之上
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+
+            /* 3. 圖標樣式 (Bootstrap Icon) */
+            i {
+              color: rgba($color-primary, 1);
+              font-size: 1.2rem;
+              line-height: 1;
+              /* 修正圖標微小的視覺偏差 */
+              &.bi-chevron-left { padding-right: 2px; }
+              &.bi-chevron-right { padding-left: 2px; }
+            }
+
+            /* 4. 互動效果：hover 時縮放並變亮 */
+            &:hover {
+              background-color: $color-primary; // 換成您的核心色
+              transform: translateY(-50%) scale(1.1);
+              box-shadow: 0 0 20px rgba($color-primary, 0.5);
+              border-color: transparent;
+
+              i{
+                color: white;
+              }
+            }
+
+            /* 左右定位 */
+            &.prev-btn { margin-bottom: .5rem; }
+          }
+
+          @media (max-width: 576px){
+            display: none;
+          }
+        }
+
+        .products-swiper{
+          width: 100%;
+          max-width: 1920px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+
+          @media (max-width: 576px){
+            // 留給 wiper-pagination 的空間
+            padding-bottom: 3.5rem;
+          }
+
+          .swiper-wrapper{
+            height: 470px;
+            padding-left: 1rem;
+            padding-bottom: 1rem;
+
+            @media (max-width: 576px) {
+              height: auto;
+              padding-left: 0;
+            }
+
+            .swiper-slide{
+              height: fit-content;
+              text-align: center;
+              transition: all 0.3s ease-in-out;
+              opacity: 0.5;           /* 透明度 50% */
+
+              .products-card{
+                height: 100%;
+                width: 100%; // 確保卡片寬度填滿 slide
+                display: flex;
+                flex-direction: column;
+                border-radius: 1.5rem;
+                border: 0 solid $color-primary;
+                cursor: pointer;
+                box-shadow: 0 4px 10px 0 rgba(0,0,0,0.25);
+                overflow: hidden;
+
+                .products-img{
+                  height: 370px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  background: #F7F7F7;
+
+                  img{
+                    width: 90%;
+                    &.bg-multiply{
+                      mix-blend-mode: multiply;
+                    }
+                  }
+                }
+
+                .products-name{
+                  color: $color-primary;
+                  padding: .85rem 1.5rem;
+                  font-size: 18px;
+                  line-height: 1;
+                  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+                  /* ⚡ 魔法開始：設定縮放基準點在上方中心，這樣就會「往下」長大 */
+                  transform-origin: top center; 
+                  width: 100%;
+                  box-sizing: border-box;
+
+                  @media (max-width: 1440px) {
+                    font-size: 1rem;
+                  }
+
+                  // ⚡ 防止版型震動
+                  @media (max-width: 768px) {
+                    background-color: $color-primary;
+                    color: white;
+                    font-size: 24px;
+                    line-height: 1.25;
+                    font-size: 1.25rem;
+                  }
+                }
+              }
+
+              @media (max-width: 576px) {
+                .products-card{
+                  width: calc(100% - 2rem);
+                  margin: 0 auto;
+
+                  .products-img{
+                    height: auto;
+                    padding: 3rem 0;
+                  }
+                }
+              }
+
+              /* 當前置中的樣式 */
+              &.swiper-slide-active {
+                .products-card{
+                  transform: scale(1);
+                  background-color: white;
+                  transition: all 0.3s ease-in-out;
+                  border: 1px solid $color-primary;
+                }
+              }
+
+              &.swiper-slide-active,
+              &:hover{
+                opacity: 1;
+                
+                .products-name{
+                  background-color: $color-primary;
+                  color: white;
+                  font-size: 24px;
+                  line-height: 1.25;
+
+                  @media (max-width: 1440px) {
+                    font-size: 1.25rem;
+                  }
+                }
+              }
+            }
+          }
+
+          .swiper-pagination {
+            // 預設不出現
+            display: none;
+            @media (max-width: 576px){
+              display: block;
+            }
+
+            .swiper-pagination-bullet{
+              &.swiper-pagination-bullet-active{
+                background-color: $color-primary;
+              }
+            }
+          }
+        }
+
+      }
+    }
+
+    .about{
+      position: relative;
+      background: radial-gradient(100% 100% at 50% 0%, #F4F7FA 0%, #E6E9F0 100%);
+      @media (max-width: 768px) {
+        padding-bottom: 0;
+      }
+
+      .about-card{
+        @media (min-width: 1536px) {
+          /* 1536px 是 2K 螢幕常見的臨界點 */
+          max-width: 1536px;
+        }
+
+        @media (min-width: 1200px) {
+          /* 確保在較小螢幕上依然能維持滿版或彈性 */
+          width: 100%;
+        }
+
+        /* 讓它在父容器中置中 */
+        margin-right: auto;
+        margin-left: auto;
+
+        @media (min-width: 996px) {
+          background-color: white;
+          border-radius: 36px;
+          box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        padding: 3% 6%;
+
+        @media (min-width: 1200px) {
+          padding: 3%;
+        }
+
+        .text-block{
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+
+          @media (min-width: 1200px) {
+            padding-right:100px;
+          }
+
+          article{
+            display: block;
+            margin-bottom: 80px;
+
+            .title{
+              margin-bottom: 30px;
+            }
+            
+            p{
+              @include line-clamp(7);
+              font-size: 18px;
+              line-height: 2rem;
+              margin-bottom: 0;
+
+              @media (max-width: 1366px) {
+                @include line-clamp(4);
+              }
+            }
+          }
+
+          a{
+            display: inline-block;
+            min-width: 0;
+          }
+
+          @media (max-width: 1200px) {
+            article{
+              margin-bottom: 1rem;
+            }
+            margin-bottom: 3rem;
+          }
+        }
+
+        .img-block {
+            img{
+              width: fit-content;
+              height: 500px;
+              border-radius: 36px;
+
+              @media (max-width: 1366px) {
+                width: 100%;
+                height: fit-content;
+              }
+
+              @media (max-width: 576px) {
+                height: auto;
+              }
+            }
+        }
+      }
+
+      .company-belief{
+        margin-top: 120px;
+        margin-bottom: 120px;
+
+        @media (min-width: 1200px) {
+          margin-bottom: 240px;
+        }
+
+        @media (max-width: 1200px) {
+          padding: 0 6%;
+          margin-bottom: 60px;
+        }
+
+        @media (max-width: 1200px) {
+          margin-top: 60px;
+        }
+
+        h5{
+          color: $color-primary;
+          font-size: 24px;
+          font-weight: 600;
+        }
+
+        .icon-group{
+          margin-top: 60px;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          .icon-block{
+            /* --- 核心修復：禁止收縮 --- */
+            flex-shrink: 0;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $color-primary;
+            border-radius: 60px;
+          }
+
+          p{
+            color: $color-primary;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.25;
+          }
+        }
+      }
+
+      .about-img{
+        @media (min-width: 1200px) {
+          position: absolute;
+          bottom: calc(-244px);
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        height: 488px;
+        border-radius: 32px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        padding: 0;
+
+        img{
+          width: 100%;
+          height: 100%;
+          /* 核心指令：裁切並置中 */
+          object-fit: cover; 
+          object-position: center;
+        }
+
+        @media (max-width: 768px) {
+          border-radius: 0;
+        }
+      }
+    }
+
+    .catalog{
+
+      @media (min-width: 1200px){
+        padding-top: calc(244px + 160px);
+      }
+
+      @media (max-width: 576px) {
+        padding-left: 1rem; // 給一點左右間距，不要讓容器直接貼螢幕
+        padding-right: 1rem;
+      }
+
+      // 左邊區塊
+      .catalog-info-block{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        @media (max-width: 1440px) {
+          p{
+            font-size: 1.125rem;
+          }
+        }
+
+        @media (max-width: 1366px) {
+          padding-right: 2rem;
+        }
+      }
+      
+      // 右邊區塊
+      .catalog-swiper-block {
+        @media (min-width: 1200px) {
+          padding: 0;
+        }
+      }
+
+      .catalog-swiper{
+        /* Swiper 容器基礎設定 */
+        width: 100%;
+        // height: fit-content;
+
+        @media (max-width: 1200px) {
+          padding-top: 40px;
+        }
+
+        @media (max-width: 576px) {
+          padding-bottom: 40px;
+          height: 640px;
+        }
+
+        .swiper-pagination-bullet{
+          &:hover{
+            background: $color-primary;
+          }
+        }
+
+        .swiper-pagination-bullet-active{
+          background: $color-primary;
+          &:hover{
+            background: $color-primary;
+          }
+        }
+
+        .swiper-slide {
+          // width: 450px; /* ⚡1920 螢幕下推薦寬度，或者用百分比如 25% */
+          // width: auto;
+          display: flex;
+          justify-content: flex-end; 
+          align-items: center;
+          transition: transform 0.4s ease;
+        }
+
+        @media (max-width: 576px) {
+          height: auto;
+          padding-bottom: 4rem;
+          .swiper-slide {
+            width: 100% !important; // 寬度設為 85%，這樣左右會自然露出前一個與後一個卡片的邊緣
+            padding-left: 1rem;
+            padding-right: 1rem;
+          }
+        }
+      }
+
+      // .catalog-card 的部分在 _catalog.scss 為內頁共用部分
+      
+      .card-body {
+
+        span{
+          font-size: 1rem;
+        }
+
+        @media (max-width: 1366px) and (min-width: 996px) {
+          .btn-group-custom {
+            .download-btn, .preview-btn {
+              padding: 8px 10px;
+            }
+          }
+        }
+      }
+
+      // 20260414 調整
+      // 線上型錄 // 首頁Swiper
+      .catalog-swiper{
+        padding-bottom: 3.5rem;
+      }
+
+      /* 分頁器顏色自定義 */
+      .swiper-pagination-bullet{
+        transition: all 0.3s ease;
+      }
+      .swiper-pagination-bullet:hover,
+      .swiper-pagination-bullet-active {
+          background: $color-primary !important;
+          opacity: 1;
+      }
+
+    }
+
+    .news{
+      background: radial-gradient(100% 100% at 50% 0%, #FFFFFF 0%, #E6E9F0 100%);
+
+      .title{
+        margin-bottom: 0;
+      }
+
+      .news-swiper{
+        margin: 0 auto; // 居中
+        
+        /* ⚡ 關鍵：設定最大寬度，防止三張卡片撐破螢幕 */
+        // max-width: 1320px; // 對應 Bootstrap container 的寬度
+
+        /* 確保 pagination 空間 */
+        padding-bottom: 4rem;
+
+        .swiper-pagination {
+          z-index: 10;
+          /* 確保它不是透明的 */
+          opacity: 1 !important; 
+          visibility: visible !important;
+
+          .swiper-pagination-bullet{
+            &.swiper-pagination-bullet-active{
+              background-color: $color-primary;
+            }
+          }
+        }
+      }
+
+      .swiper-wrapper{
+        // card hover 預留的空間
+        padding-top: 3rem;
+        /* ⚡ 關鍵：如果不想讓第一張和最後一張的陰影被切掉 */
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      // .news-card 共用，設定值在 _news.scss
+      
+      // .news-card {
+      //   /* 確保卡片寬度由 Swiper 邏輯控制 */
+      //   width: calc(100% - 2rem);
+
+      //   border: none;
+      //   background: transparent;
+      //   border-radius: 12px; // 更有質感的圓角
+      //   height: 100%; // 確保等高
+      //   display: flex;
+      //   flex-direction: column;
+
+      //   flex-grow: 1;
+      //   justify-content: space-between; // 讓按鈕永遠在底部
+        
+      //   // 基礎細膩陰影：營造飄浮在平面上的高級感
+      //   // box-shadow: 0 8px 8px rgba(0, 0, 0, 0.04);
+      //   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+      //   overflow: hidden;
+
+      //   // 圖片容器
+      //   .news-card-img {
+      //       border-bottom: #DDD 1px solid;
+      //       // 去除底部圓角，讓它與 Body 銜接
+      //       border-radius: 12px 12px 0 0; 
+      //       overflow: hidden;
+
+      //       img{
+      //         width: 100%;
+      //         height: 100%;
+      //         object-fit: contain;
+      //         transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+      //       }
+      //   }
+
+      //   .news-card-body {
+      //       flex-grow: 1;
+      //       padding: 1rem 1.25rem 1.25rem; // 增加呼吸空間
+      //       display: flex;
+      //       flex-direction: column;
+
+      //       .news-date {
+      //           // margin-bottom: 0.75rem;
+      //           font-weight: 500;
+      //           font-size: 0.85rem;
+      //           color: #999;
+      //           letter-spacing: 0.05em;
+      //           text-transform: uppercase;
+      //           transition: color 0.3s ease;
+      //       }
+
+      //       .news-title {
+      //           font-size: 1.75rem;
+      //           font-weight: 700;
+      //           line-height: 1;
+      //           color: $color-text;
+      //           transition: color 0.3s ease;
+                
+      //           // 兩行截斷
+      //           display: -webkit-box;
+      //           -webkit-line-clamp: 2;
+      //           -webkit-box-orient: vertical;
+      //           overflow: hidden;
+      //           // height: 3rem; // 固定高度確保對齊
+      //           margin-bottom: 1.25rem;
+
+      //           @media (max-width: 1400px) {
+      //             font-size: 1.25rem;
+      //             height: auto;
+      //           }
+      //       }
+
+      //       .news-excerpt {
+      //           font-size: 1.25rem;
+      //           color: #333; // 提高易讀性
+      //           line-height: 1.5;
+      //           transition: color 0.3s ease;
+                
+      //           // 三行截斷
+      //           display: -webkit-box;
+      //           -webkit-line-clamp: 3;
+      //           -webkit-box-orient: vertical;
+      //           overflow: hidden;
+
+      //           // p { margin-bottom: 0; }
+
+      //           ul {
+      //             list-style: none;
+      //             padding-left: 0;
+      //             li { margin-bottom: 0.25rem; }
+      //           }
+      //       }
+
+      //       .new-more-btn {
+      //         font-weight: 600;
+      //         color: $color-primary;
+      //         display: flex;
+      //         align-items: center;
+      //         gap: 8px;
+      //         transition: all 0.3s ease;
+
+      //         align-self: flex-end;
+
+      //         &.marquee-style {
+      //           display: inline-flex; // 讓按鈕寬度隨內容
+      //           align-items: center;
+      //           gap: 12px; // 文字與圓圈的間距
+      //           font-weight: 600;
+      //           cursor: pointer;
+      //           transition: all 0.3s ease;
+      //           text-decoration: none;
+
+      //           // 1. 文字屬性
+      //           .btn-text{
+      //             font-size: 1rem;
+      //           }
+
+      //           // 2. 圓形容器
+      //           .icon-circle {
+      //             width: 36px;
+      //             height: 36px;
+      //             background-color: transparent;
+      //             border: 1px solid $color-primary; // 預設邊框顏色
+      //             border-radius: 50%;
+      //             display: flex;
+      //             align-items: center;
+      //             justify-content: center;
+      //             overflow: hidden; // ⚡ 關鍵：鎖住邊界
+      //             position: relative;
+      //             transition: all 0.3s ease;
+
+      //             // 3. 圖標群組（負責位移）
+      //             .icon-group {
+      //               display: flex;
+      //               align-items: center;
+      //               gap: 16px; // ⚡ 關鍵：兩個箭頭之間的間距，需大於圓圈寬度
+      //               position: absolute;
+                    
+      //               left: calc(-1rem - 16px);
+      //               /* 預設不發動動畫，或發動很慢的動畫 */
+      //               // animation: marqueeArrow 1.5s linear infinite; 
+      //               // animation-play-state: paused; // 預設暫停
+
+      //               i {
+      //                 color: $color-primary; // 預設圖標顏色
+      //                 font-weight: 600;
+      //                 line-height: 1;
+      //                 flex-shrink: 0; // 防止圖標被壓縮
+      //                 transition: color 0.3s ease;
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      //   }
+
+      //   // ⭐ 核心 Hover 演繹：注入靈魂的動態感
+      //   &:hover {
+      //     transform: translateY(-12px); // 向上抽離
+      //     background: #ffffff;
+      //     // 深邃且柔軟的擴散陰影
+      //     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+
+      //     .news-card-img {
+      //         img{
+      //           transform: scale(1.05); // 圖片微幅向外擴張
+      //         }
+      //     }
+
+      //     .news-card-body {
+      //         .news-date {
+      //             color: $color-primary; // 日期點亮
+      //         }
+
+      //         .news-title {
+      //             color: $color-primary; // 標題主色亮起
+      //         }
+
+      //         .new-more-btn {
+      //           letter-spacing: 1px; // 文字稍微撐開
+      //           i {
+      //             transform: translateX(5px); // 箭頭向右滑動
+      //           }
+      //           .icon-circle {
+      //             background-color: $color-primary; // 圓圈上色
+      //             border-color: transparent; // 隱藏邊框
+      //             box-shadow: 0 5px 15px rgba($color-primary, 0.3); // 增加微妙光暈
+
+      //             .icon-group {
+      //               // 啟動無縫循環動畫
+      //               animation: marqueeArrow .85s linear infinite; 
+                    
+      //               i {
+      //                 color: white; // 箭頭變白
+      //               }
+      //             }
+      //           }
+      //         }
+      //     }
+      //   }
+      // }
+
+      // // ⭐ 跑馬燈關鍵幀動畫
+      // @keyframes marqueeArrow {
+      //     0% {
+      //         /* 起始點：第一個箭頭在中間 */
+      //         transform: translateX(0px);
+      //     }
+      //     100% {
+      //         /* 結束點：第一個箭頭完全移出，第二個箭頭精準卡位 */
+      //         /* 計算公式：-(圖標寬度 + gap) */
+      //         transform: translateX(calc(1rem + 20px));
+      //     }
+      // }
+
+      // // 行動裝置，沒有hover
+      // @media (max-width: 991.98px){
+      //   .title{
+      //     margin-left: 1rem;
+      //   }
+
+      //   .swiper-wrapper{
+      //     padding-top: 2rem;
+      //   }
+
+      //   .news-card{
+      //     background: #ffffff;
+      //     .news-card-body {
+      //       .news-date {
+      //           color: $color-primary; // 日期點亮
+      //       }
+
+      //       .news-title {
+      //           color: $color-primary; // 標題主色亮起
+      //       }
+
+      //       .new-more-btn {
+      //         letter-spacing: 1px; // 文字稍微撐開
+      //         i {
+      //           transform: translateX(5px); // 箭頭向右滑動
+      //         }
+      //         &.marquee-style {
+      //           .icon-circle {
+      //             background-color: $color-primary; // 圓圈上色
+      //             border-color: transparent; // 隱藏邊框
+      //             box-shadow: 0 5px 15px rgba($color-primary, 0.3); // 增加微妙光暈
+
+      //             .icon-group {
+      //               // 啟動無縫循環動畫
+      //               animation: marqueeArrow .85s linear infinite; 
+                    
+      //               i {
+      //                 color: white; // 箭頭變白
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+
+    } // .new END
+
+  } // main END
+}
+
+// 首頁修正 Navbar Products Dropmenu
+.home{
+  .navbar{
+    @media (min-width: 1366px) {
+      .navbar-nav{
+        .nav-item.dropdown{
+          &:hover{
+            .dropdown-menu {
+              transform: translateY(18px); // 首頁
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 中文版修正
+// .home{
+//   &.zh{
+//   }
+// }

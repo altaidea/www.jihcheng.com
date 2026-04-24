@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jih Cheng Machinery - Ultimate Decoupled Nav</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+      :root {
+          --jc-blue: #27348E;
+          --nav-height: 70px;
+          --top-height: 40px;
+          --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      body { padding-top: calc(var(--nav-height) + var(--top-height)); }
+
+      /* --- 1. Top Header (功能層) --- */
+      .top-header {
+          background-color: var(--jc-blue);
+          height: var(--top-height);
+          position: fixed;
+          top: 0; width: 100%; z-index: 1050;
+          display: flex; align-items: center;
+      }
+      .top-header a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85rem; transition: 0.3s; }
+      .top-header a:hover { color: white; }
+
+      /* --- 2. Main Navbar (品牌層) --- */
+      .main-navbar {
+          background: white;
+          height: var(--nav-height);
+          position: fixed;
+          top: var(--top-height); width: 100%; z-index: 1040;
+          border-bottom: 1px solid #eee;
+          display: flex; align-items: center;
+      }
+      .navbar-brand strong { color: var(--jc-blue); font-size: 1.5rem; }
+
+      /* --- 3. 獨立搜尋手風琴層 (解耦設計) --- */
+      .search-accordion-layer {
+          position: fixed;
+          top: calc(var(--nav-height) + var(--top-height));
+          left: 0; width: 100%;
+          height: 0; /* 初始高度為 0 */
+          background: var(--jc-blue);
+          overflow: hidden;
+          transition: var(--transition);
+          z-index: 1030;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      }
+      .search-accordion-layer.active { height: 80px; } /* 展開高度 */
+
+      .search-inner {
+          max-width: 1200px; margin: 0 auto; height: 100%;
+          display: flex; align-items: center; padding: 0 2rem;
+      }
+      .search-input {
+          flex-grow: 1; background: transparent; border: none;
+          border-bottom: 1px solid rgba(255,255,255,0.3);
+          color: white; padding: 10px; outline: none; font-size: 1.2rem;
+      }
+      .search-close-btn { background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+
+      /* --- 4. 漢堡與旋轉三角形 --- */
+      .custom-hamburger {
+          width: 30px; height: 22px; position: relative; background: transparent; border: none; cursor: pointer;
+          z-index: 2000; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end;
+      }
+      .hamburger-line { height: 2px; background-color: var(--jc-blue); transition: 0.3s; border-radius: 2px; }
+      .line-1 { width: 100%; } .line-2 { width: 60%; } .line-3 { width: 100%; }
+      .custom-hamburger.active .hamburger-line { background-color: #FFFFFF; }
+      .custom-hamburger.active .line-1 { transform: translateY(10px) rotate(45deg); }
+      .custom-hamburger.active .line-2 { opacity: 0; }
+      .custom-hamburger.active .line-3 { transform: translateY(-10px) rotate(-45deg); }
+
+      /* 桌機 Hover 旋轉 */
+      @media (min-width: 992px) {
+          .nav-item.dropdown:hover .dropdown-menu { display: block; opacity: 1; transform: translateY(0); }
+          .dropdown-menu { 
+              display: block; opacity: 0; transform: translateY(10px); 
+              transition: var(--transition); position: absolute; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+          }
+          .dropdown-toggle::after { transition: transform 0.3s ease; vertical-align: middle; }
+          .nav-item.dropdown:hover .dropdown-toggle::after { transform: rotate(180deg); }
+      }
+
+      /* --- 5. Offcanvas 滿版 --- */
+      .offcanvas-full { width: 100% !important; background: var(--jc-blue) !important; border: none; z-index: 1500; }
+      .offcanvas-body .nav-link { color: white !important; font-size: 2rem; text-align: center; margin: 1rem 0; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<header class="top-header">
+    <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+        <div class="sns-links d-none d-md-block">
+            <a href="#" class="me-3"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="me-3"><i class="bi bi-linkedin"></i></a>
+            <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+        <div class="top-tools d-flex align-items-center">
+            <div class="dropdown me-3">
+                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Language</a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">繁體中文</a></li>
+                    <li><a class="dropdown-item" href="#">English</a></li>
+                </ul>
+            </div>
+            <a href="javascript:void(0)" onclick="toggleSearch()" class="search-btn text-white"><i class="bi bi-search"></i></a>
+        </div>
+    </div>
+</header>
+
+<nav class="main-navbar">
+    <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" href="#"><strong>Jih Cheng</strong></a>
+
+        <div class="collapse navbar-collapse justify-content-end d-none d-lg-flex">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item px-3"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item dropdown px-3">
+                    <a class="nav-link dropdown-toggle" href="#" id="prodDrop">Products</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Packing Machine</a></li>
+                        <li><a class="dropdown-item" href="#">Filling Machine</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item px-3"><a class="nav-link" href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <button class="custom-hamburger" id="hamburgerBtn" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+            <span class="hamburger-line line-1"></span>
+            <span class="hamburger-line line-2"></span>
+            <span class="hamburger-line line-3"></span>
+        </button>
+    </div>
+</nav>
+
+<div id="searchLayer" class="search-accordion-layer">
+    <div class="search-inner">
+        <input type="text" class="search-input" placeholder="Enter keywords to search...">
+        <button class="search-close-btn" onclick="toggleSearch()"><i class="bi bi-x-lg"></i></button>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-end offcanvas-full" id="mobileMenu" tabindex="-1">
+    <div class="offcanvas-body d-flex flex-column align-items-center justify-content-center">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+        </ul>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // 1. 搜尋層開關
+    function toggleSearch() {
+        document.getElementById('searchLayer').classList.toggle('active');
+    }
+
+    // 2. 漢堡與 Offcanvas 同步
+    const offcanvas = document.getElementById('mobileMenu');
+    const burger = document.getElementById('hamburgerBtn');
+    offcanvas.addEventListener('show.bs.offcanvas', () => burger.classList.add('active'));
+    offcanvas.addEventListener('hide.bs.offcanvas', () => burger.classList.remove('active'));
+
+    // 3. 點擊外部關閉搜尋
+    document.addEventListener('click', (e) => {
+        const layer = document.getElementById('searchLayer');
+        if (!layer.contains(e.target) && !e.target.closest('.search-btn')) {
+            layer.classList.remove('active');
+        }
+    });
+</script>
+
+</body>
+</html>

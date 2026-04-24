@@ -1,0 +1,324 @@
+.contact{
+  .company-wrapper{
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1;
+    
+    @media (max-width: 960px) {
+      width: 90%;
+    }
+
+    &::after{
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 388px;
+
+      border-radius: 0 0 0 60px;
+      border-left: $color-primary 1px solid;
+      border-bottom: $color-primary 1px solid;
+      pointer-events: none; // 讓滑鼠點不到這條邊框
+      box-shadow: -6px 4px 12px -2px rgba(black, .2);
+      clip-path: inset( 0px 0px -20px -20px);
+      // z-index: -1;
+
+      @media (max-width: 1200px) {
+        height: 316px;
+      }
+
+      @media (max-width: 960px) {
+        height: 32%;
+      }
+    }
+
+    img {
+      border-radius: 0 0 0 60px;
+      display: block; // 消除圖片下方空隙
+
+      @media (max-width: 960px) {
+        width: 100%;
+      }
+    }
+
+    h2{
+      font-size: 54px;
+      font-weight: bold;
+      color: $color-primary;
+    }
+
+    .photo-block, .info-block{
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    @media (max-width: 1200px) {
+      .photo-block{
+        img{
+          width: 90%;
+        }
+      }
+    }
+
+    .info-block{
+      min-height: 528px;
+      padding-bottom: 32px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .company-info-block{
+        ul{
+          // margin-bottom: 0;
+          li{
+            padding: .5rem 0;
+          }
+        }
+      }
+
+      article{
+        @media (max-width: 1024px) {
+          margin-top: 2rem;
+        }
+        p{
+          margin-bottom: 0;
+          font-size: 18px;
+          line-height: 32px;
+        }
+      }
+    }
+  }
+
+  &.zh{
+    .company-wrapper{
+      .info-block{
+        .company-info-block{
+          ul{
+            margin-top: 0;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // 表單
+  // .contact-form-section {
+  //   padding: 80px 0;
+
+  //   .custom-form-container {
+  //     max-width: 1400px; // 主人要求的絕對寬度
+  //     width: 95%;        // 手機版時縮小
+  //   }
+
+  //   .form-wrapper {
+  //     background-color: #ffffff;
+  //     padding: 60px 80px;
+  //     border-radius: 20px;
+  //     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+  //     .form-intro {
+  //       color: #666;
+  //       font-size: 1.1rem;
+  //       margin-bottom: 40px;
+  //     }
+  //   }
+
+  //   .form-label {
+  //     font-weight: 600;
+  //     color: #333;
+  //     margin-bottom: 8px;
+      
+  //     &.required::before {
+  //       content: "* ";
+  //       color: #ff0000;
+  //     }
+  //   }
+
+  //   .form-control, .form-select {
+  //     height: 50px;
+  //     border: 1px solid #dee2e6;
+  //     border-radius: 8px;
+  //     background-color: #fbfbfb;
+  //     transition: all .3s ease-in-out;
+
+  //     &:focus {
+  //       border-color: $color-primary;
+  //       box-shadow: 0 0 0 0.25rem rgba($color-primary, 0.1);
+  //       background-color: #fff;
+  //     }
+  //   }
+
+  //   textarea.form-control {
+  //     height: auto;
+  //   }
+
+  //   .btn-send-inquiry {
+  //     background-color: #006eb8; // 圖片中的深藍色
+  //     color: #fff;
+  //     width: 100%;
+  //     max-width: 500px; // 按鈕不要無限寬
+  //     height: 60px;
+  //     font-weight: bold;
+  //     font-size: 1.2rem;
+  //     border-radius: 12px;
+  //     transition: all .3s ease-in-out;
+  //     border: none;
+
+  //     &:hover {
+  //       background-color: darken(#006eb8, 10%);
+  //       transform: translateY(-3px);
+  //       box-shadow: 0 5px 15px rgba(0, 110, 184, 0.3);
+  //     }
+  //   }
+  // }
+
+  // 表單區塊優化
+  .contact-form-section {
+    // 💡 使用動態間距，手機版縮減為 40px，電腦版 80px
+    padding: clamp(40px, 8vh, 80px) 0;
+
+    .custom-form-container {
+      max-width: 1400px; 
+      width: 95%;
+      margin: 0 auto;
+    }
+
+    .form-wrapper {
+      background-color: #ffffff;
+      border-radius: 24px; // 稍微增加圓角，提升現代感
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+      padding: 60px 80px;
+      
+      // 💡 關鍵優化：響應式內距
+      padding: 60px 80px; 
+      @media (max-width: 1200px) { padding: 50px 40px; } // 平板/小筆電
+      @media (max-width: 575.98px) { padding: 40px 20px; }  // 手機版：釋放寬度給輸入框
+
+      .form-intro {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+        line-height: 1.6;
+
+        @media (max-width: 575.98px) {
+          font-size: 1rem; // 手機版稍微縮小，避免視覺壓迫
+          margin-bottom: 24px;
+        }
+      }
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+      display: inline-block;
+      
+      &.required::before {
+        content: "* ";
+        color: #ff0000;
+        margin-right: 4px;
+      }
+    }
+
+    // .form-control, .form-select {
+    //   height: 52px; // 稍微增加一點高度，提升點擊舒適度
+    //   border: 1px solid #dee2e6;
+    //   border-radius: 10px; // 圓角微調
+    //   background-color: #fbfbfb;
+    //   transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); // 更順滑的緩動
+
+    //   &:focus {
+    //     border-color: $color-primary;
+    //     box-shadow: 0 0 0 4px rgba($color-primary, 0.1); // 擴散感更柔和
+    //     background-color: #fff;
+    //   }
+    // }
+
+    /* 💎 核心優化：輸入框與下拉選單 */
+    .form-control, .form-select {
+      width: 100%; // 💡 強制寬度，防止手機端溢出
+      height: 52px;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      background-color: #fbfbfb;
+      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &:focus {
+        border-color: $color-primary;
+        box-shadow: 0 0 0 4px rgba($color-primary, 0.1);
+        background-color: #fff;
+      }
+    }
+
+    /* 🚀 下拉選單專屬：溢位與 RWD 淨化 */
+    .form-select {
+      appearance: none; // 💡 移除系統預設箭頭
+      -webkit-appearance: none;
+      
+      // 注入自定義品牌箭頭
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23006eb8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1.25rem center;
+      background-size: 16px 12px;
+      
+      padding-right: 3rem; // 💡 為箭頭預留空間，防止文字蓋過箭頭
+      
+      // 💡 解決文字溢位：當內容過長時顯示省略號
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      @media (max-width: 575.98px) {
+        font-size: 16px; // 🚀 關鍵：防止 iOS 聚焦時自動縮放
+        height: 54px;
+        padding-left: 12px;
+        background-position: right 0.75rem center; // 手機版箭頭微調
+      }
+    }
+
+    textarea.form-control {
+      height: auto;
+      padding-top: 12px;
+    }
+
+    .btn-send-inquiry {
+      background-color: $color-primary;
+      color: #fff;
+      width: 100%;
+      max-width: 500px; 
+      height: 64px; // 增加高度，營造「核心動作」的權威感
+      font-weight: bold;
+      font-size: 1.25rem;
+      border-radius: 14px;
+      border: none;
+      
+      // 💡 確保在手機端按鈕居中
+      display: block;
+      margin: 40px auto 0; 
+      
+      transition: all .3s ease-in-out;
+      cursor: pointer;
+
+      @media (max-width: 575.98px) {
+        height: 56px;
+        font-size: 1.1rem;
+        margin-top: 24px;
+      }
+
+      &:hover {
+        // background-color: darken(#006eb8, 8%);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(0, 110, 184, 0.25);
+      }
+
+      &:active {
+        transform: translateY(-1px); // 💡 模擬真實按壓感
+      }
+    }
+  }
+
+}

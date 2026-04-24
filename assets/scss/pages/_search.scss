@@ -1,0 +1,86 @@
+.search-section{
+  overflow: hidden;
+  min-height: 50vh;
+  .content{
+    padding-left: 8.3%;
+    padding-right: 8.3%;
+    padding-top: 160px;
+    padding-bottom: 160px;
+  }
+}
+
+// 搜尋工具
+.search-accordion-layer{
+  form{
+    width: 100%;
+    
+  }
+  .search-input{
+    width: 90%;
+    border-radius: 30px; // 數值可根據主人的美感調整
+    padding: 8px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent; // 確保基底透明
+
+    @media (max-width: 576px) {
+      width: 76%;
+    }
+  }
+
+  .search-input {
+    // ⚡ 核心修正：移除瀏覽器自動填入的黃色背景與黑字
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {      
+      // 修正自動填入後的文字顏色 (設為白色或 Cyan)
+      -webkit-text-fill-color: #fff !important;
+      
+      // 過渡動畫：防止背景色閃爍
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    // 針對 Firefox 的優化
+    filter: none;
+    &::first-line {
+      font-family: inherit;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.search-accordion-layer {
+
+  .search-layer-x-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    @media (max-width: 576px) {
+      right: 1rem;
+    }
+    &:hover {
+      color: #fff;
+      transform: rotate(90deg); // 旋轉微交互
+    }
+  }
+
+  .search-submit-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    padding: 5px 15px;
+    cursor: pointer;
+    opacity: 0.6;
+    @media (max-width: 576px) {
+      padding: 0;
+    }
+    &:hover { opacity: 1; }
+  }
+}

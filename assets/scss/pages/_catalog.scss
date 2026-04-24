@@ -1,0 +1,182 @@
+// 線上型錄 // 共用卡片
+.catalog{
+  .catalog-card {
+    background: #ffffff;
+    border: 1px solid #e0e6f0; /* 淺灰色邊框 */
+    border-radius: 20px;       /* 圓角設計 */
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    max-width: 600px;
+    margin: 0 auto;
+
+    .card-body {
+      display: flex;
+      // align-items: center;
+      align-items: stretch; // ⭐ 關鍵：確保左右兩欄等高
+      padding: 0; /* 讓左側封面貼邊 */
+
+      @media (max-width: 767.98px) {
+        flex-direction: column; /* 改為上下排列 */
+      }
+
+      /* 左側封面區塊 */
+      .catalog-cover {
+        flex: 0 0 40%; 
+        aspect-ratio: 1 / 1; /* ⭐ 關鍵：強制維持 1:1 比例 */
+
+        background-color: #f2f4f7; /* 設計稿中的淺灰背景 */
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        @media (max-width: 767.98px) {
+          flex: 0 0 auto;
+          width: 100%; /* 寬度撐滿 */
+          padding: 40px; /* 在手機上增加一點間距，讓封面更精緻 */
+        }
+
+        img {
+          width: fit-content;
+          height: 100%;
+          /* ⭐ 關鍵：確保圖片比例不失真，並完整顯示在正方形內 */
+          object-fit: contain;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+          border-radius: .5rem;
+        }
+      }
+
+      /* 右側資訊區塊 */
+      .catalog-info {
+        flex: 1;
+        padding: 30px 20px;
+        text-align: left;
+
+        @media (max-width: 767.98px) {
+          width: 100%;
+        }
+
+        span{
+          display: inline-block;
+          font-size: 1rem;
+          @media (max-width: 767.98px) {
+            font-size: .75rem;
+            width: 100%;
+            text-align: center;
+            margin-bottom: .5rem;
+          }
+        }
+
+        .title {
+          position: relative;
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #1a3a8a; /* 深藍色調 */
+          margin-bottom: 25px;
+          line-height: 1.4;
+          padding-top: 15px;
+
+          &::before{
+            content: '';
+            position: absolute;
+            width: 36px;
+            height: 3px;
+            background-color: $color-primary;
+            top: 0;
+            left: 0;
+          }
+
+          @media (max-width: 767.98px) {
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.15rem;
+            /* 在行動端，裝飾線改為置中展示 */
+            display: inline-block; 
+            width: 100%;
+            text-align: center;
+            
+            &::before{
+              display: none;
+            }
+          }
+        }
+
+        /* 按鈕組樣式 */
+        .btn-group-custom {
+          display: flex;
+          gap: 15px;
+          align-items: center;
+
+          @media (max-width: 767.98px) {
+            justify-content: center;
+          }
+
+          i {
+            margin-right: 8px;
+          }
+
+          /* 下載按鈕 (外框樣式) */
+          .download-btn,  .preview-btn{
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 20px;
+            border: 1px solid #999999;
+            border-radius: 50px;
+            color: $color-primary;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+
+            &:hover {
+              color: white;
+              background-color: #1e2866;
+              border: 1px solid $color-primary;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 10px rgba(43, 57, 144, 0.3);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 線上型錄 // 內頁版型
+.catalog{
+
+  .catalog-section{
+    padding-top: var(--page-padding-top);
+    padding-bottom: 140px;
+
+    .catalog-card-wrapper{
+
+      @media (max-width: 767.98px) {
+        margin-bottom: 60px;
+      }
+
+      .catalog-card{
+        width: 100%;
+
+        @media (max-width: 767.98px) {
+          width: 85%;
+        }
+
+        .card-body {
+          .catalog-info {
+            .title {
+              text-align: left;
+              @media (max-width: 767.98px) {
+                text-align: center;
+              }
+
+              &::before{
+                left: 16px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,175 @@
+/* ---- external (若一定要用 @import url，放最上方) ---- */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+
+// 英文語系
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Serif+TC:wght@200..900&display=swap');
+
+// 外國語系
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Sans+SC:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet');
+
+// 適合標題使用 // 字型變化總類少
+@import url('https://fonts.googleapis.com/css2?family=Voces&display=swap');
+
+/* ---- foundation ---- */
+@import "_variables";
+@import "_common";   // 全站通用樣式
+@import "_mixins";
+
+/* ---- base ---- */
+@import "_typography";
+
+/* SVG */
+.icon-logo {
+    width: auto;
+    height: auto;
+
+    // 控制第一個 path (currentColor)
+    color: $color-primary;
+
+    // 控制第二個 path (logoName)
+    --logo-name-color: #FFFFFF; // 您可以隨意更換成您想要的顏色，例如 $color-secondary
+
+    // &:hover {
+    //     --logo-name-color: #FFFFFF; // 連 hover 都能分開控制，非常絲滑
+    // }
+}
+
+/* 確保 svg 本體不會溢出 */
+svg.icon {
+    width: 100%;
+    height: 100%;
+}
+
+.shrink{
+  svg.icon {
+    width: fit-content;
+    height: 100%;
+  }
+}
+
+footer{
+  @media screen and (max-width: 960px) {
+    .icon-logo {
+      height: 60px;
+    }
+
+    svg.icon{
+      height: 60px;
+    }
+  }
+}
+
+:root {
+  /* 定義間距變數 */
+  --section-padding-y: 60px;
+  @media (min-width: 768px) {
+    --section-padding-y: 140px;
+  }
+
+  // --base-font-size: 15px;
+  // 側掛
+  --sidebar-width: 65px;
+  --sidebar-bg: #f8f9fa; /* 更細膩的冷白灰色 */
+  // 社群配色
+  --line-color: #06C755;
+  --fb-color: #1877F2;
+  --yt-color: #FF0000;
+  // 其他
+  --transition-speed: 0.3s;
+
+  // 內頁標題
+  // 內頁副標題
+  // 內頁內外間距
+  --page-padding-top: 36px;
+  @media (min-width: 768px) {
+    --page-padding-top: 140px;
+  }
+
+   --page-padding-bottom: 36px;
+  @media (min-width: 768px) {
+    --page-padding-bottom: 140px;
+  }
+  
+
+  
+
+  @media (min-width: 1024px) {
+    
+  }
+
+  @media (min-width: 1440px) {
+    
+  }
+
+  @media (min-width: 1920px) {
+    
+  }
+
+  // 動畫速度一致化
+  --transition-speed: 0.3s;
+}
+
+// 選配設定項目
+/* 推薦做法：全域設定，讓所有元素都服從 border-box 規則 */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+    font-family: $font-family-base;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: 1.125rem;
+    background-color: #FEFEFE;
+
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* iOS 更流暢 */
+
+    color: $color-text;
+
+    overflow-x: hidden; /* AOS 安全修正 */
+
+    font-size: clamp(16px, 1.1vw + 10px, 21px); /* 依據不同設計調整，流動的RWD字體 */
+    line-height: 1.6; /* 建議加上行高，閱讀更舒適 */
+}
+
+/* AOS 避免內容在 1440px 閃爍的優化 */
+[data-aos] { pointer-events: none; }
+.aos-animate { pointer-events: auto; }
+html{
+    scroll-behavior: smooth;
+}
+
+a{
+    text-decoration: none;
+    color: $color-text;
+    transition: 
+        color .3s ease-in-out,
+        font-weight .3s ease-in-out;
+
+    &:hover, &.active{
+        color: $color-primary;
+        font-weight: 600;
+    }
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sp{display: none;}
+.pc{display: block;}
+
+article{
+  color: $color-text;
+}
+
+@media screen and (min-width: 344px) and (max-width: 1200px) {
+  .pc{display: none;}
+  .sp{display: block;}
+}

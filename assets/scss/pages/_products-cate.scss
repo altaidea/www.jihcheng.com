@@ -1,0 +1,49 @@
+// 本架構一部分沿用 _products.scss
+// 獨立新增部分為   _products-cate.scss
+
+.products-cate{
+  .category-main-title{
+    position: relative;
+    font-weight: bold;
+    border-bottom: #aaa 1px solid;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 3rem;
+
+    .text-highlight{
+      color: $color-primary;
+      margin-right: .75rem;
+      @media (max-width: 960px) {
+        display: block;
+      }
+    }
+
+    .text-machine{
+      color: $color-text;
+    }
+  }
+
+  .products-cate-info{
+    display: flex;
+    margin-bottom: 5rem;
+    align-items: flex-start; // 確保標題與內文頂部對齊
+
+    @media (max-width: 576px) {
+      margin-bottom: 0;
+    }
+
+    h4 {
+      // ─── 核心修正：強制不斷行 ───
+      white-space: nowrap; 
+      flex-shrink: 0;      // 強制規定：禁止被壓縮寬度
+      font-weight: 700;
+      margin-bottom: 0;
+      margin-right: 1rem;
+    }
+
+    p{
+      margin-bottom: 0;
+      line-height: 1.35;
+    }
+  }
+}

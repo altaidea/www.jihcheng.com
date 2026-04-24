@@ -1,0 +1,134 @@
+# ================================================
+# 🔒 檔案隔離 (Apache 2.4+ 語法)
+# ================================================
+<Files "jihcheng_config_202603.dat">
+    Order allow,deny
+    Deny from all
+</Files>
+# ================================================
+# 🚧 關閉 MultiViews，避免內容協商干擾
+# ================================================
+Options -MultiViews
+RewriteEngine On
+
+# ⭐ 自動適應路徑：如果您在子目錄，請確保 .htaccess 放在該子目錄內
+# 如果發生 500 錯誤，可嘗試手動取消註解下一行並調整為您的子目錄路徑
+# RewriteBase /demo/www.jihcheng.com/
+
+# ==============================================
+# 🔁 語系強制定向 (SEO 核心)
+# ==============================================
+# ⭐ 將 /zh/ 轉為 /zh-TW/，排除實體檔案避免死循環
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^zh/(.*)$ zh-TW/$1 [R=301,L,NC]
+
+# ==============================================
+# 🔁 舊網址 → 新網址
+# ==============================================
+
+# ==============================
+# 🧱 維護模式：若 maintenance.html 存在 → 導向維護頁
+RewriteCond %{REQUEST_URI} !^/maintenance\.html$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+RewriteRule ^.*$ /maintenance.html [R=302,L]
+# ==============================
+
+############################################
+# A) 在「測試機 altaweb02.com.tw」上 → 全部導向正式網域
+#    僅測試主機時才執行，不影響正式站
+############################################
+
+# 放行 ACME 憑證與 Cloudflare Email Obfuscation
+RewriteCond %{REQUEST_URI} ^/(\.well-known/|cdn-cgi/) [NC]
+RewriteRule ^ - [L]
+
+# 放行 error 與 captcha
+RewriteRule ^(error|captcha)\.php$ - [L]
+
+# === 當測試站直接請求 .php → 對應 .html 並導向正式站 ===
+# RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+# RewriteCond %{THE_REQUEST} \s/+[^\s?]*\.php[\s?] [NC]
+# RewriteRule ^([a-z]{2})/([A-Za-z0-9_-]+)\.php$ https://www.jihcheng.com/$1/$2.html [R=301,L,NE]
+
+# === 多語系根目錄特例 → 導向正式站對應語系首頁 ===
+# RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+# RewriteCond %{THE_REQUEST} \s/+([a-z]{2})/[\s?] [NC]
+# RewriteRule ^([a-z]{2})/?$ https://www.jihcheng.com/%1/home [R=301,L,NE]
+
+# === 測試站 jihcheng.com.tw/zh/* → 導向正式站對應頁 ===
+# RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+# RewriteRule ^jihcheng\.com\.tw/([a-z]{2})/(.*)$ https://www.jihcheng.com/$1/$2 [R=301,L,QSD,NE]
+
+# === 測試站 jihcheng.com.tw/ 根目錄 → 導向正式站首頁 ===
+# RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+# RewriteRule ^jihcheng\.com\.tw/?$ https://www.jihcheng.com/zh/ [R=301,L,QSD]
+
+# ================================================
+# 測試站根目錄與語系首頁 → 導向正式站首頁
+# ================================================
+# 1️⃣ 根目錄 /jihcheng.com.tw/ 或 /jihcheng.com.tw/index.php
+# RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+# RewriteCond %{REQUEST_URI} ^/(?:jihcheng\.com\.tw/?|jihcheng\.com\.tw/index\.php)?$ [NC]
+# RewriteRule ^ https://www.jihcheng.com/ [R=301,L,QSD]
+
+# 2️⃣ 語系首頁（/jihcheng.com.tw/zh/、/cn/、/en/）
+# RewriteCond %{REQUEST_URI} ^/jihcheng\.com\.tw/(zh|cn|en|ko)/?$ [NC]
+# RewriteRule ^ https://www.jihcheng.com/%1/ [R=301,L,QSD]
+
+# 3️⃣ 語系首頁 index.php（/jihcheng.com.tw/zh/index.php 等）
+# RewriteCond %{REQUEST_URI} ^/jihcheng\.com\.tw/(zh|cn|en|ko)/index\.php$ [NC]
+# RewriteRule ^ https://www.jihcheng.com/%1/ [R=301,L,QSD]
+
+
+# ========== 追加部分 START =================================
+
+# === 其他請求：維持原 altaweb02 → demo 的邏輯 ===
+# RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+# RewriteCond %{REQUEST_URI} !^/www\.jihcheng\.com\.tw/ [NC]
+# RewriteRule ^(.*)$ - [L]
+
+# === 最後：/www.jihcheng.com/ → 強制導首頁 ===
+# RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+# RewriteCond %{REQUEST_URI} ^/www\.jihcheng\.com\.tw/ [NC]
+# RewriteRule ^www\.jihcheng\.com\.tw/.*$ https://www.jihcheng.com/ [R=301,L,QSD]
+
+# ========== 追加部分 END ===================================
+
+############################################
+# B) 正式站 規範化（網址強制 .html）
+############################################
+
+# 實體檔案與目錄 → 直接放行，不處理
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 1️⃣ 將 .php 對外轉成 .html (例如 contact.php -> contact.html)
+RewriteCond %{THE_REQUEST} \s/+([^\s?]+)\.php(?:[?\s]|$) [NC]
+RewriteCond %1 !^index$ [NC]
+RewriteRule ^ %1.html [R=301,L,QSD]
+
+# 2️⃣ 語系首頁規範化 (支援 zh-TW)
+# 如果網址是 /zh-TW/ 或 /zh-TW (不分大小寫)，強制 301 導向到 home.html
+RewriteRule ^(zh-TW|en)/?$ $1/home.html [R=301,L,NC]
+
+# 原有的首頁補完 (例如 /zh-TW/home -> /zh-TW/home.html)
+RewriteRule ^(zh-TW|en|cn|ko)/home/?$ $1/home.html [R=301,L,NC]
+
+# 3️⃣ 搜尋頁面 (使用 [L] 停止後續匹配)
+RewriteRule ^(zh-TW|en|cn|ko)/search/(.+)$ index.php?path=$1/search&keyword=$2 [L,QSA,B]
+
+# 4️⃣ 核心路由：將 .html 請求交給 index.php
+# 使用 [DPI] 旗標防止子目錄路徑在某些伺服器配置下重複疊加
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)\.html$ index.php?path=$1 [L,QSA]
+
+# 5️⃣ 萬用 Fallback：其餘非檔案請求統一交給 index.php
+# 確保 /zh/products/series 這種不帶 .html 的也能進入路由
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !\.html$
+RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]

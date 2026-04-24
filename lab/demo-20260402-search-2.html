@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Protocol</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --juliet-pink: #1278D2;
+            --juliet-accent: #063E7F;
+            --transition-speed: 0.45s;
+        }
+
+        body {
+            background: linear-gradient(90deg, #063E7F 0%, #1278D2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .ui-test-box{
+          display: flex;
+          justify-content: flex-end;
+          min-width: 216px;
+        }
+
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            height: 40px;
+        }
+
+        /* 搜尋框本體 (180*36) */
+        .search-input-box {
+            width: 0;
+            height: 36px;
+            opacity: 0;
+            overflow: hidden;
+            transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity var(--transition-speed) ease;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 18px 0 0 18px;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .search-input-box.active {
+            width: 180px;
+            opacity: 1;
+            border: 1px solid var(--juliet-pink);
+            border-right: none;
+        }
+
+        .search-control {
+            width: 140px; /* 預留右側 Icon 空間 */
+            height: 100%;
+            border: none;
+            padding: 0 5px 0 15px;
+            font-size: 14px;
+            outline: none;
+            background: transparent;
+            color: #555;
+        }
+
+        /* 內部可點擊搜尋 Icon */
+        .inner-search-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            margin-right: 10px;
+            color: var(--juliet-pink);
+            cursor: pointer;
+            transition: transform 0.2s ease, color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inner-search-btn:hover {
+            color: var(--juliet-accent);
+            transform: scale(1.15);
+        }
+
+        /* 外部切換按鈕 */
+        .search-toggle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            border: 1px solid var(--juliet-pink);
+            color: var(--juliet-pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.1);
+        }
+
+        .search-toggle-btn.active {
+            border-radius: 0 18px 18px 0;
+            border-left: none;
+            height: 36px;
+            width: 36px;
+        }
+
+        .search-toggle-btn:hover {
+            color: var(--juliet-accent);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-test-box">
+      <div class="search-wrapper">
+          <div id="targetInput" class="search-input-box">
+              <!-- 輸入框 -->
+              <input type="text" id="searchInput" class="search-control" placeholder="Search">
+              <!-- 內部可點擊搜尋按鈕 -->
+              <button type="button" class="inner-search-btn" onclick="executeActualSearch()" title="Search">
+                  <i class="bi bi-search"></i>
+              </button>
+          </div>
+
+          <!-- 外部切換/關閉按鈕 -->
+          <div id="triggerBtn" class="search-toggle-btn" onclick="executeSearchToggle()">
+              <i id="mainIcon" class="bi bi-search"></i>
+          </div>
+      </div>
+    </div>
+
+    <script>
+      // 1. 控制搜尋框展開與關閉
+      function executeSearchToggle() {
+          const inputBox = document.getElementById('targetInput');
+          const btn = document.getElementById('triggerBtn');
+          const icon = document.getElementById('mainIcon');
+
+          const isActive = inputBox.classList.toggle('active');
+          btn.classList.toggle('active');
+
+          if (isActive) {
+              icon.classList.remove('bi-search');
+              icon.classList.add('bi-x-lg');
+              setTimeout(() => document.getElementById('searchInput').focus(), 300);
+          } else {
+              icon.classList.remove('bi-x-lg');
+              icon.classList.add('bi-search');
+          }
+      }
+
+      // 2. 內部 Icon 點擊後的實際搜尋行為
+      function executeActualSearch() {
+          const query = document.getElementById('searchInput').value;
+          if (query.trim() !== "") {
+              alert("搜尋中: " + query);
+              // 這裡可以導向 search.php?keyword=...
+          } else {
+              document.getElementById('searchInput').focus();
+          }
+      }
+
+      // 支援 Enter 鍵觸發
+      document.getElementById('searchInput').addEventListener('keypress', function (e) {
+          if (e.key === 'Enter') {
+              executeActualSearch();
+          }
+      });
+    </script>
+</body>
+</html>

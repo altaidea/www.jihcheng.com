@@ -1,0 +1,900 @@
+// 防側漏
+// .aboutus, .page-header main{
+//   overflow-x: hidden;
+// }
+
+.about{
+
+  main{
+
+    @media (max-width: 1560px) {
+      padding-left: 6rem;
+      padding-right: 6rem;
+    }
+
+    @media (max-width: 768px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    article{
+      color: $color-gray-charcoal;
+      font-weight: 400;
+      font-size: 1.25rem;
+      text-align: center;
+      
+      @media (max-width: 1560px) {
+        font-size: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        text-align: left;
+      }
+
+      &.intro{
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 80px;
+
+        @media (max-width: 768px) {
+          max-width: 100%;
+          margin-bottom: 2rem;
+        }
+      }
+    }
+
+    h3{
+      color: $color-primary;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 600;
+      @media (max-width: 768px) {
+        font-size: 1.5rem;
+      }
+    }
+
+    p{
+      color: $color-primary;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    // #1 Technologies
+    .section-main{
+      padding-top: var(--page-padding-top);
+
+      .container{
+        .row{
+          article{
+            text-align: left;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 0;
+
+            // @media (max-width: 1559px) {
+            //   padding-left: 20%;
+            // }
+
+            @media (min-width: 996px) {
+              padding-right: 2.5rem;
+            }
+
+            @media (max-width: 576px) {
+              padding-bottom: 2rem;
+            }
+          }
+
+          .about-img-1{
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            border-radius: 2rem;
+            box-shadow: 0px 4px 4px 0px #00000040;
+
+            @media (min-width: 1560px) {
+              width: 770px;
+              height: 420px;
+            }
+
+            // @media (max-width: 1559px) {
+            //   width: 80%;
+            // }
+
+            @media (max-width: 576px) {
+              height: 250px;
+            }
+          }
+        }
+      }
+    }
+    
+    // #2 Company Belief
+    .section-second{
+      padding-top: 140px;
+
+      .intro{
+        @media (max-width: 576px) {
+          padding-bottom: 2rem;
+        }
+      }
+
+      .solution-wrapper{
+        margin: 60px auto;
+
+        @media (max-width: 576px) {
+          margin-top: 0;
+        }
+
+        /* ⚡ 核心優化：限制寬度並置中 */
+        max-width: 900px; // 可根據內容長度微調 (例如 800px ~ 1000px)
+        margin-left: auto;
+        margin-right: auto;
+
+        .icon-group{
+          margin-top: 60px;
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+
+          @media (max-width: 576px) {
+            &:first-child{
+              margin-top: 2rem;
+            }
+          }
+
+          .icon-block{
+            /* --- 核心修復：禁止收縮 --- */
+            flex-shrink: 0;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $color-primary;
+            border-radius: 60px;
+          }
+        }
+      }
+
+      .part{
+        max-width: 80%; // 可根據內容長度微調 (例如 800px ~ 1000px)
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 30px;
+
+        @media (max-width: 576px) {
+          max-width: 100%;
+        }
+      }
+
+      .about-img-2{
+        max-width: 1200px; 
+        width: 100%;
+        height: 388px;
+        margin-left: auto;
+        margin-right: auto;
+        overflow: hidden;
+        border-radius: 2rem;
+        box-shadow: 0px 4px 4px 0px #00000040;
+
+        img{
+          /* ⚡ 修正：img 必須填滿父容器高度，object-fit 才會生效 */
+          width: 100%;
+          height: 100%;
+
+          /* 確保圖片不變形，會自動裁切多餘部分 */
+          object-fit: cover;
+          
+          /* 可選：針對不同螢幕調整裁切焦點 (例如對準上方或中心) */
+          object-position: center;
+        }
+
+        /* ⚡ 手機端適配：防止高度在窄螢幕顯得太突兀 */
+        @media (max-width: 768px) {
+          height: 250px; // 手機端高度縮減一點
+        }
+      }
+    }
+    
+    // #3 Quality Policy
+    .section-third{
+      padding-top: 140px;
+
+      h3{
+        margin-bottom: 60px;
+
+        @media (max-width: 576px) {
+          font-size: 24px;
+          margin-bottom: 2rem;
+        }
+      }
+
+      article{
+        height: 100%;
+        text-align: left;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        p{
+          color: $color-gray-charcoal;
+          margin-bottom: 0;
+          font-size: 24px;
+        }
+
+        ul{
+          padding: 24px 0;
+          padding-left: 24px;
+          font-size: 24px;
+          color: $color-primary;
+          font-weight: 600;
+          line-height: 42px;
+          list-style: disc;
+
+          @media (max-width: 576px) {
+            font-size: 18px;
+            line-height: 1.25;
+          }
+
+          li{
+            padding-bottom: 1rem;
+          }
+        }
+
+        span{
+          font-size: 21px;
+
+          @media (max-width: 576px) {
+            font-size: 18px;
+            line-height: 1.25;
+            margin-bottom: 2rem;
+          }
+        }
+      }
+
+      .about-img-3{
+        max-width: 100%;
+        height: 380px;
+        overflow: hidden;
+        border-radius: 2rem;
+        box-shadow: 0px 4px 4px 0px #00000040;
+
+        img{
+          /* ⚡ 修正：img 必須填滿父容器高度，object-fit 才會生效 */
+          width: 100%;
+          height: 100%;
+
+          /* 確保圖片不變形，會自動裁切多餘部分 */
+          object-fit: cover;
+          
+          /* 可選：針對不同螢幕調整裁切焦點 (例如對準上方或中心) */
+          object-position: center;
+        }
+
+        /* ⚡ 手機端適配：防止高度在窄螢幕顯得太突兀 */
+        @media (max-width: 768px) {
+          height: 250px; // 手機端高度縮減一點
+        }
+      }
+    }
+
+    // #4 History
+    .section-four{
+      padding-top: 140px;
+
+      @media (max-width: 576px) {
+          padding-left: .5rem;
+          padding-right: .5rem;
+        }
+
+      .history-wrapper{
+        margin-top: 120px;
+        margin-bottom: 160px;
+        position: relative;
+
+        .time-line-row{
+
+          // 偶數靠右設定
+          display: flex;
+          &:nth-child(2n) {
+            justify-content: flex-end;
+            .history-block{
+              flex-direction: row;
+              .history-year{
+                left: -126px;
+              }
+
+              &::after{
+                left: -154px;
+              }
+            }
+          }
+
+          @media (max-width: 1024px) {
+            display: block;
+          }
+
+        }
+
+        &::after{
+          content: '';
+          position: absolute;
+          width: 1px;
+          height: 100%;
+          background-color: #999999;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+
+          @media (max-width: 1024px) {
+            left: 0;
+            transform: none;
+          }
+        }
+
+        // 樹狀圖分枝
+        .history-block{
+          display: flex;
+          flex-direction: row-reverse;
+          width: 50%;
+
+          @media (max-width: 1024px) {
+            width: 100%;
+            flex-direction: row;
+            margin-bottom: 4rem;
+          }
+
+          @media (max-width: 576px) {
+            display: block;
+            margin-bottom: 6rem;
+          }
+
+          .history-intro{
+            width: 80%;
+            min-height: auto;
+            padding: 30px 26px;
+            font-size: 1.15rem;
+            border-radius: 24px;
+            border: 2px solid $color-primary;
+            box-shadow: 0px 4px 4px 0px #00000040;
+            background-color: white;
+
+            @media (max-width: 576px) {
+              width: calc(100% - 1rem);
+              margin-left: 1rem;
+            }
+          }
+
+          .history-year{
+            width: 20%;
+            font-size: 42px;
+            color: $color-primary;
+            font-weight: 900;
+
+            @media (max-width: 576px) {
+              width: fit-content;
+            }
+
+            span{
+              display: block;
+              text-align: center;
+              border-bottom: 1px solid #999999;
+
+              @media (max-width: 576px) {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                padding-bottom: .25rem;
+                line-height: 1;
+                margin-bottom: .75rem;
+              }
+            }
+
+            @media (max-width: 1440px) {
+              font-size: 36px;
+            }
+          }
+        }
+      }
+    }
+
+    // .title{
+    //   color: $color-primary;
+    //   font-size: 54px;
+    //   font-weight: 900;
+
+    //   // @media (max-width: 576px) {
+    //   //   font-size: 38px;
+    //   // }
+      
+    //   span{
+    //     color: $color-secondary;
+    //     font-weight: 900;
+    //   }
+    // }
+
+    // .about-main{
+
+    //   .sub-title{
+    //     font-weight: 900;
+    //     color: $color-light;
+
+    //     @media (max-width: 576px) {
+    //       padding: 0 1rem;
+    //     }
+    //   }
+
+    //   .title{
+    //     margin-bottom: 0;
+
+    //     @media (max-width: 1500px) {
+    //       font-size: 48px;
+    //     }
+
+    //     @media (max-width: 576px) {
+    //       padding: 0 1rem;
+    //     }
+    //   }
+
+    //   .text-block{
+    //     @media (max-width: 576px) {
+    //       padding: 0 2rem;
+    //     }
+
+    //     article{
+    //       margin-top: 60px;
+    //       margin-bottom: 40px;
+    //       p{
+    //         line-height: 32px;
+    //       }
+    //     }
+
+    //     .text-block-img{
+    //       width: 750px;
+    //       height: 426px;
+    //       overflow: hidden;
+    //       display: flex;
+    //       align-items: flex-start;
+    //       justify-content: center;
+    //       border-radius: 32px;
+
+    //       img{
+    //         width: auto;
+    //         height: auto;
+    //       }
+
+    //       @media (max-width: 1500px) {
+    //         width: 100%;
+    //         height: calc(388px * .9);
+
+    //         img{
+    //           width: 130%;
+    //         }
+    //       }
+
+    //       @media (max-width: 1500px) {
+    //         height: 220px;
+    //         margin-bottom: 2rem;
+    //       }
+
+    //       @media (min-width: 1440px) {
+    //         // height: 340px;
+    //       }
+
+    //       @media (max-width: 1366px) {
+    //         height: 300px;
+    //       }
+
+    //       @media (max-width: 576px) {
+    //         height: 200px;
+    //       }
+    //     }
+    //   }
+
+    //   // .img-block{
+    //   //   position: relative;
+
+    //   //   @media (max-width: 1200px) {
+    //   //     width: 100%;
+    //   //     height: 380px;
+    //   //     overflow: hidden;
+    //   //     border-radius: 0;
+    //   //   }
+
+    //   //   .inner-block{
+    //   //     position: absolute;
+    //   //     display: flex;
+    //   //     width: 384px;
+    //   //     height: 684px;
+    //   //     overflow-x: hidden;
+
+    //   //     img{
+    //   //       width: fit-content;
+    //   //       height: 100%;
+    //   //     }
+
+    //   //     &:first-child{
+    //   //       bottom: -88px;
+    //   //       left: 112px;
+    //   //       border-radius: 32px;
+
+    //   //       @media (max-width: 1500px) {
+    //   //         left: calc(112px *.35);
+    //   //       }
+
+    //   //       @media (max-width: 1366px) {
+    //   //         width: 300px;
+    //   //         height: 600px;
+    //   //         bottom: 0;
+    //   //       }
+
+    //   //       @media (max-width: 1200px) {
+    //   //         width: 50%;
+    //   //         height: 320px;
+    //   //         border-radius: 0;
+    //   //         left: 0;
+    //   //         top: 0;
+    //   //       }
+    //   //     }
+
+    //   //     &:last-child{
+    //   //       top: -132px;
+    //   //       right: -236px;
+    //   //       border-radius: 32px 0 0 32px;
+            
+    //   //       @media (max-width: 1500px) {
+    //   //         right: calc(-236px *.8);
+
+    //   //         img{
+    //   //           width: auto;
+    //   //         }
+    //   //       }
+
+    //   //       @media (max-width: 1200px) {
+    //   //         width: 50%;
+    //   //         height: 320px;
+    //   //         border-radius: 0;
+    //   //         right: 0;
+    //   //         top: 0;
+    //   //       }
+    //   //     }
+    //   //   }
+    //   // }
+
+    //   // 20260316 修改
+    //   .img-block {
+    //     position: relative;
+    //     min-height: 684px; // 確保父層有高度支撐絕對定位
+
+    //     @media (max-width: 1200px) {
+    //       width: 100%;
+    //       height: auto; // 改為 auto 讓內容撐開
+    //       min-height: 400px;
+    //       overflow: hidden;
+    //       display: flex;
+    //       gap: 10px; // 手機版給點間距
+    //     }
+
+    //     .inner-block {
+    //       position: absolute;
+    //       display: flex;
+    //       flex-direction: column; // 【關鍵】改為垂直排列，放上下兩張
+    //       width: 384px;
+    //       height: 684px;
+    //       gap: 20px; // 上下圖片的間距
+
+    //       img {
+    //         width: 100%; // 強制寬度填滿 384px
+    //         height: calc(50% - 10px); // 平分高度並扣除 gap
+    //         object-fit: cover; // 確保圖片比例不失真
+    //         border-radius: 32px; // 統一圓角美學
+
+    //         @media (max-width: 768px) {
+    //           height: 160px;
+    //         }
+    //       }
+
+    //       &.left-group {
+    //         left: 112px;
+
+    //         @media (max-width: 1500px) {
+    //           left: calc(112px * .35);
+    //         }
+
+    //         @media (max-width: 1366px) {
+    //           width: 300px;
+    //           height: 600px;
+    //           bottom: 0;
+    //         }
+
+    //         @media (max-width: 1200px) {
+    //           position: relative; // 手機版回歸流動佈局
+    //           width: 50%;
+    //           height: 400px;
+    //           left: 0;
+    //           bottom: 0;
+    //         }
+    //       }
+
+    //       &.right-group {
+    //         right: -236px;
+
+    //         @media (max-width: 1500px) {
+    //           right: calc(-236px * .8);
+    //         }
+
+    //         @media (max-width: 1200px) {
+    //           position: relative;
+    //           width: 50%;
+    //           height: 400px;
+    //           top: 0;
+    //           right: 0;
+    //         }
+    //       }
+
+    //       // @media (max-width: 1200px) {
+    //       //   margin-bottom: 2.5rem;
+    //       // }
+    //     }
+
+    //     @media (max-width: 768px) {
+    //       padding-left: 2rem;
+    //       padding-right: 2rem;
+    //     }
+    //   }
+      
+    // }
+
+    // .about-product-list-wrapper{
+    //   margin-top: 180px;
+    //   margin-bottom: 60px;
+
+    //   @media (max-width: 1366px) {
+    //     margin-top: 60px;
+    //     margin-bottom: 0;
+    //   }
+
+    //   @media (max-width: 1200px) {
+    //     margin-top: 0;
+    //     margin-bottom: 60px;
+    //   }
+
+    //   @media (max-width: 960px) {
+    //     margin-bottom: 0;
+    //   }
+
+    //   .about-product-list {
+    //     list-style: none;
+    //     padding-left: 0;
+    //     margin-bottom: 0; // 【重要】清除 ul 底部的預設間距
+
+    //     li {
+    //       position: relative;
+    //       padding-left: 1.5rem;
+    //       // 這裡我們把間距設為變數，方便同步
+    //       $spacing: 0.75rem; 
+    //       margin-bottom: $spacing; 
+    //       font-size: 21px;
+    //       font-weight: bold;
+    //       line-height: 32px;
+
+    //       // 清除最後一個 li 的間距，避免它與網格的 gap 疊加
+    //       &:last-child {
+    //         margin-bottom: 0; 
+    //       }
+
+    //       &::before {
+    //         content: "•";
+    //         position: absolute;
+    //         left: 0;
+    //         color: $color-primary;
+
+    //         @media (max-width: 960px) {
+    //           display: none;
+    //         }
+    //       }
+    //     }
+    //   }
+      
+    //   .grid-layout {
+    //     display: grid;
+    //     grid-template-columns: 1fr;
+        
+    //     // 【關鍵修正】
+    //     // 讓網格的垂直間距 (row-gap) 等於 li 的間距 (0.75rem)
+    //     // 這樣 RWD 換行時，看起來就像是同一個清單在延伸！
+    //     row-gap: 0.75rem; 
+    //     column-gap: 1.5rem;
+
+    //     @media (min-width: 768px) {
+    //       grid-template-columns: repeat(2, 1fr);
+    //       row-gap: 2rem; // 在橫向排列時，可以把上下間距拉開一點
+    //     }
+
+    //     @media (min-width: 992px) {
+    //       grid-template-columns: repeat(3, auto);
+    //       justify-content: space-between;
+    //       column-gap: 4rem;
+    //     }
+    //   }
+    // }
+    
+    // .about-company-wrapper {
+    //   .row {
+    //     --bs-gutter-x: 70px; 
+    //     align-items: stretch; // 確保左右兩欄高度對齊
+          
+    //     @media (min-width: 1500px) {
+    //       .photo-block {
+    //         max-width: 500px; // 強制鎖定寬度
+    //       }
+    //       .info-block {
+    //         max-width: 870px; 
+    //         flex: 0 0 870px; // 強制佔據空間
+    //       }
+    //     }
+    //   }
+
+    //   .photo-block{
+    //     padding-top: 24px;
+
+    //     @media (max-width: 1366px) {
+    //       img{
+    //         transform: scale(.85);
+    //         transform-origin: left bottom;
+    //       }
+    //     }
+
+    //     @media (max-width: 1100px) {
+    //       img{
+    //         transform: scale(.7);
+    //         transform-origin: left bottom;
+    //       }
+    //     }
+
+    //     @media (max-width: 1100px) {
+    //         img{
+    //           transform: scale(1);
+    //         }
+    //     }
+
+    //     @media (max-width: 768px) {
+    //       margin-bottom: 24px;
+    //     }
+
+    //     @media (max-width: 767px) {
+    //       padding-left: 0;
+    //     }
+    //   }
+
+    //   .info-block{
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: space-between;
+    //     min-height: 512px;
+
+    //     @media (min-width: 1366px) {
+    //       justify-content: flex-end;
+    //     }
+    //   }
+
+    //   .companyphoto-grid {
+    //     display: grid;
+    //     // 1. 手機版 (預設)：單欄垂直疊放，維持最緊密的接觸
+    //     // grid-template-columns: 1fr;
+    //     grid-template-columns: repeat(2, 1fr);
+    //     gap: 1.5rem;
+    //     margin-top: 2rem;
+
+    //     // 2. 平板版 (md 以上)：過渡體位，2x2 排列
+    //     @media (min-width: 768px) {
+    //       grid-template-columns: repeat(2, 1fr);
+    //       gap: 1rem;
+    //     }
+
+    //     // 3. 電腦版 (lg 以上)：【關鍵修正】四個並列
+    //     @media (min-width: 992px) {
+    //       // 讓四個項目平分寬度，並保持 70px 的呼吸感
+    //       grid-template-columns: repeat(4, 1fr); 
+    //       column-gap: 20px; // 稍微收緊間距，讓四張圖在 870px 內不顯擁擠
+    //     }
+
+    //     .cert-item {
+    //       background: #fff;
+    //       padding: 0; // 清除內距，讓圖片邊緣更貼合
+    //       border: 1px #999 solid; // 移除邊框，展現二次元的那種乾淨感
+    //       border-radius: 15px;
+    //       overflow: hidden; // 確保圖片不會溢出圓角
+    //       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    //       height: 157px;
+    //       @media (max-width: 1500px) {
+    //         height: calc(157px * .8);
+    //       }
+
+    //       img {
+    //         width: 100%;
+    //         height: 100%;
+    //         object-fit: cover; // 確保四張圖即便比例不同也能整齊合身
+    //         display: block;
+    //         filter: brightness(1); // 恢復亮度
+    //       }
+
+    //       &:hover {
+    //         transform: scale(1.05); 
+    //         box-shadow: 0 10px 30px rgba($color-primary, 0.2);
+    //       }
+    //     }
+    //   }
+    // }
+
+    // .about-quality-wrapper{
+    //   margin-top: 80px;
+
+    //   .title{
+    //     margin-bottom: 60px;
+
+    //     @media (max-width: 768px) {
+    //       margin-bottom: 36px;
+    //     }
+    //   }
+
+    //   p{
+    //     margin-bottom: 0;
+    //   }
+
+    //   .sub-title{
+    //     font-size: 24px;
+    //     font-weight: bold;
+    //   }
+
+    //   h3{
+    //     font-size: 42px;
+    //     font-weight: 900;
+    //     color: $color-primary;
+    //     margin-bottom: 24px;
+    //   }
+
+    //   .about-quality-product-img{
+    //     max-height: 400px;
+    //     display: flex;
+    //     align-items: center;
+    //     padding-top: 2rem;
+    //     img{
+    //       width: 100%;
+    //     }
+    //   }
+
+    //   .about-quality-section{
+    //     // margin: 60px 0;
+    //     margin-bottom: 60px;
+
+    //     article{
+    //       padding-bottom: 1.5rem;
+
+    //       &:nth-child(3){
+    //         padding-bottom: 0;
+    //       }
+    //     }
+    //   }
+    // }
+
+    // .about-quality-photo{
+    //   *{padding: 0;}
+      
+    //   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    //   overflow: hidden;
+
+    //   // &:hover {
+    //   //   transform: translateY(-2px);
+    //   //   box-shadow: 0 10px 30px rgba($color-primary, 0.2);
+    //   // }
+
+    //   img{
+    //     width: 100%;
+    //     display: block;
+    //   }
+    // }
+  }
+}

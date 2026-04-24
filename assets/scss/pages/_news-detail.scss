@@ -1,0 +1,115 @@
+.news{
+  // 內文樣式設定
+  .news-detail-section{
+      margin-top: 160px;
+      margin-bottom: 160px;
+
+      h1, h2, h3, h4, h5, p{
+          display: block;
+      }
+
+      h2{
+          font-size: 42px;
+          padding-bottom: .5rem;
+          margin-bottom: .5rem;
+          color: $color-primary;
+          font-weight: bold;
+          border-bottom: #DDDDDD 1px solid;
+      }
+
+      h3{ 
+          color: $color-primary;
+          margin-top: 4rem;
+          margin-bottom: 2rem;
+      }
+
+      .data{
+        font-size: 1rem;
+      }
+
+      .news-content{
+          margin-top: 30px;
+          margin-bottom: 60px;
+          min-height: 20dvh;
+
+          .img-list{
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+              gap: 16px;
+              margin-bottom: 3rem;
+
+              @media screen and (max-width: 576px){
+                  grid-template-columns: 1fr;
+              }
+
+              img{
+                  // width: 100%;
+                  // height: auto;
+
+                  width: 100%;
+                  height: 100%;
+                  aspect-ratio: 4 / 3;     // ⭐ 固定視覺高度比例（可調）
+                  object-fit: cover;       // ⭐ 直式裁切，橫式正常
+                  display: block;
+              }
+          }
+
+          p{
+              font-size: 1.25rem;
+
+              @media screen and (max-width: 992px){
+                  font-size: 1rem;
+              }
+          }
+
+          ul{
+              margin-left: 1.65rem;
+              margin-bottom: 2rem;
+              li{
+                  list-style: disc;
+                  line-height: 2;
+              }
+          }
+
+          .process-list{
+              span{
+                  color: $color-primary;
+                  display: inline-block;
+                  cursor: pointer;
+                  transition: transform .3s ease-in-out;
+
+                  &:hover{
+                      transform: translateY(-.5rem);
+                  }
+              }
+          }
+
+          .video{
+              iframe{
+                  width: 100%;
+                  height: 537px;
+
+                  @media screen and (max-width: 1200px){
+                      height: 360px;
+                  }
+
+                  @media screen and (max-width: 992px){
+                      height: 260px;
+                  }
+              }
+          }
+      }
+
+      .page-back-wrapper{
+          margin-top: 80px;
+      }
+  }
+
+  // 內文 圖片樣式設定
+  .img-set-50{
+      max-width: 50%;
+      @media screen and (max-width: 576px){
+          max-width: 100%;
+      }
+  }
+}

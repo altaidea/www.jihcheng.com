@@ -1,0 +1,59 @@
+/* --- 主容器 --- */
+#sidebar-line {
+    position: fixed;
+    right: -170px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 240px;
+    display: flex;
+    align-items: center;
+    background-color: #00c300;
+    color: white;
+    padding: 12px;
+    border-radius: 50px 0 0 50px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 9;
+    box-shadow: -5px 5px 20px rgba(0,0,0,0.15);
+}
+
+/* --- 反白 Icon (白底綠字) --- */
+.icon-box {
+    width: 50px; height: 50px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    flex-shrink: 0; margin-right: 15px;
+}
+.icon-box i { color: #00c300; font-size: 32px; }
+
+/* --- QR Code 區域 --- */
+.content-box {
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 0; transition: opacity 0.3s; width: 100%;
+}
+.content-box span { font-weight: bold; font-size: 15px; margin-bottom: 8px; white-space: nowrap; }
+.qr-code { width: 120px; height: 120px; background: white; padding: 5px; border-radius: 8px; display: none;}
+
+/* --- 電腦版 Hover --- */
+@media (min-width: 769px) {
+    #sidebar-line:hover { right: 0; border-radius: 20px 0 0 20px; }
+    #sidebar-line:hover .content-box { opacity: 1; }
+    #sidebar-line:hover .qr-code { display: block; }
+}
+
+/* --- 手機版 RWD --- */
+@media (max-width: 768px) {
+    #sidebar-line {
+        bottom: 10px; 
+        top: auto;
+        right: 10px;
+        transform: none;
+        width: 65px; height: 65px; padding: 0; border-radius: 50%;
+        justify-content: center; transition: transform 0.2s;
+    }
+    
+    .icon-box { margin-right: 0; width: 65px; height: 65px; }
+    .content-box { display: none; }
+    #sidebar-line:active { transform: scale(0.9); }
+}

@@ -1,0 +1,62 @@
+.breadcrumb {
+  // 💡 使用動態垂直間距，讓它在不同螢幕下保有比例
+  padding: clamp(12px, 2vh, 20px) 0;
+  background-color: transparent; // 確保背景純淨
+  margin-bottom: 0;
+
+  .container {
+    // 💡 關鍵：手機版縮減為 15px，電腦版恢復主人的 60px
+    // padding-left: clamp(15px, 5vw, 60px);
+    // padding-right: clamp(15px, 5vw, 60px);
+    
+    display: flex;
+    // 💡 電腦版靠右，但手機版改為靠左 (符合行動端閱讀直覺)
+    justify-content: flex-end; 
+    
+    @media (max-width: 767.98px) {
+      justify-content: flex-start;
+    }
+    
+    ul {
+      display: flex;
+      flex-wrap: wrap; // 💡 關鍵：路徑太長時允許自動換行，不撐破容器
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: flex;
+        align-items: center; // 確保文字與分隔符垂直居中
+        // 💡 字體動態縮放：手機 14px -> 電腦 18px
+        font-size: clamp(14px, 1.2vw, 18px);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        white-space: nowrap; // 防止單個單詞被切斷
+
+        &::after {
+          content: ">";
+          margin-left: 0.5rem;
+          margin-right: 0.5rem;
+          color: #ccc; // 分隔符稍微淡化，不搶主色
+          font-weight: 300;
+        }
+
+        &:last-child {
+          cursor: not-allowed; /* 顯示「禁止點擊」符號 */
+          pointer-events: none;  /* 讓點擊事件完全失效 */
+          color: $color-primary;
+          
+          &::after {
+            display: none;
+          }
+        }
+
+        &.item {
+          &:hover{
+            color: $color-primary;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,201 @@
+# ================================================
+# 🚧 關閉 MultiViews，避免內容協商干擾
+# ================================================
+Options -MultiViews
+RewriteEngine On
+
+############################################
+# H) HTTP → HTTPS（僅正式網域）
+############################################
+# 情況 1：不是 www 開頭的 wealthy-hill.com.tw (不論 HTTP 或 HTTPS)
+RewriteCond %{HTTP_HOST} ^wealthy-hill\.com\.tw$ [NC]
+RewriteRule ^(.*)$ https://www.santung.com/$1 [R=301,L]
+
+# 情況 2：是 www 但卻是 HTTP (轉 HTTPS)
+RewriteCond %{HTTP_HOST} ^www\.wealthy-hill\.com\.tw$ [NC]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ https://www.santung.com/$1 [R=301,L]
+
+# ================================================
+# 🛑 防止 404 頁面被搜尋引擎索引
+# ================================================
+<FilesMatch "^(404|error)\.(php|html)$">
+    Header set X-Robots-Tag "noindex, nofollow, noarchive"
+</FilesMatch>
+
+# ==============================================
+# 🔁 舊網址 → 新網址（Wealthy Hill）
+# 使用 THE_REQUEST，僅攔截實際請求
+# ==============================================
+
+# 首頁（/ 已是正確網址，通常可不寫）
+# https://www.santung.com/ → /
+# （可省略）
+# About
+RewriteCond %{THE_REQUEST} \s+/about(?:\?.*|\s) [NC]
+RewriteRule ^about$ /aboutus.html [R=301,L,QSD]
+
+# Products（列表）
+RewriteCond %{THE_REQUEST} \s+/products(?:\?.*|\s) [NC]
+RewriteRule ^products$ /products.html [R=301,L,QSD]
+
+# Product 1 → PET Acoustic Panel
+RewriteCond %{THE_REQUEST} \s+/product-1\.php(?:\?.*|\s) [NC]
+RewriteRule ^product-1\.php$ /products/pet-acoustic-panel.html [R=301,L,QSD]
+
+# Projects（多個舊頁統一導向）
+RewriteCond %{THE_REQUEST} \s+/pro-1-[1-5]-more\.php(?:\?.*|\s) [NC]
+RewriteRule ^pro-1-[1-5]-more\.php$ /projects.html [R=301,L,QSD]
+
+# Product 2 → Wood Wool Acoustic Panel
+RewriteCond %{THE_REQUEST} \s+/product-2\.php(?:\?.*|\s) [NC]
+RewriteRule ^product-2\.php$ /products/wood-wool-acoustic-panel.html [R=301,L,QSD]
+
+# Product 3 → Rock Wool Board
+RewriteCond %{THE_REQUEST} \s+/product-3\.php(?:\?.*|\s) [NC]
+RewriteRule ^product-3\.php$ /products/rock-wool-board.html [R=301,L,QSD]
+
+# Product 4 → Other Products
+RewriteCond %{THE_REQUEST} \s+/product-4\.php(?:\?.*|\s) [NC]
+RewriteRule ^product-4\.php$ /products/other-products.html [R=301,L,QSD]
+
+# News
+RewriteCond %{THE_REQUEST} \s+/news(?:\?.*|\s) [NC]
+RewriteRule ^news$ /news.html [R=301,L,QSD]
+
+# Inquiry → Contact
+RewriteCond %{THE_REQUEST} \s+/inquiry(?:\?.*|\s) [NC]
+RewriteRule ^inquiry$ /contact.html [R=301,L,QSD]
+
+# ==============================
+# 🧱 維護模式：若 maintenance.html 存在 → 導向維護頁
+RewriteCond %{REQUEST_URI} !^/maintenance\.html$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+RewriteRule ^.*$ /maintenance.html [R=302,L]
+# ==============================
+
+############################################
+# A) 在「測試機 altaweb02.com.tw」上 → 全部導向正式網域
+#    僅測試主機時才執行，不影響正式站
+############################################
+
+# 放行 ACME 憑證與 Cloudflare Email Obfuscation
+RewriteCond %{REQUEST_URI} ^/(\.well-known/|cdn-cgi/) [NC]
+RewriteRule ^ - [L]
+
+# 放行 error 與 captcha
+RewriteRule ^(error|captcha)\.php$ - [L]
+
+# === 當測試站直接請求 .php → 對應 .html 並導向正式站 ===
+RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+RewriteCond %{THE_REQUEST} \s/+[^\s?]*\.php[\s?] [NC]
+RewriteRule ^([a-z]{2})/([A-Za-z0-9_-]+)\.php$ https://www.santung.com/$1/$2.html [R=301,L,NE]
+
+# === 多語系根目錄特例 → 導向正式站對應語系首頁 ===
+RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+RewriteCond %{THE_REQUEST} \s/+([a-z]{2})/[\s?] [NC]
+RewriteRule ^([a-z]{2})/?$ https://www.santung.com/%1/home [R=301,L,NE]
+
+# === 測試站 wealthy-hill.com.tw/zh/* → 導向正式站對應頁 ===
+RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+RewriteRule ^wealthy-hill\.com\.tw/([a-z]{2})/(.*)$ https://www.santung.com/$1/$2 [R=301,L,QSD,NE]
+
+# === 測試站 wealthy-hill.com.tw/ 根目錄 → 導向正式站首頁 ===
+RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+RewriteRule ^wealthy-hill\.com\.tw/?$ https://www.santung.com/zh/ [R=301,L,QSD]
+
+# ================================================
+# 測試站根目錄與語系首頁 → 導向正式站首頁
+# ================================================
+# 1️⃣ 根目錄 /wealthy-hill.com.tw/ 或 /wealthy-hill.com.tw/index.php
+RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+RewriteCond %{REQUEST_URI} ^/(?:wealthy-hill\.com\.tw/?|wealthy-hill\.com\.tw/index\.php)?$ [NC]
+RewriteRule ^ https://www.santung.com/ [R=301,L,QSD]
+
+# 2️⃣ 語系首頁（/wealthy-hill.com.tw/zh/、/en/、/ja/、/es/）
+RewriteCond %{REQUEST_URI} ^/wealthy-hill\.com\.tw/(zh|en|ja|es)/?$ [NC]
+RewriteRule ^ https://www.santung.com/%1/ [R=301,L,QSD]
+
+# 3️⃣ 語系首頁 index.php（/wealthy-hill.com.tw/zh/index.php 等）
+RewriteCond %{REQUEST_URI} ^/wealthy-hill\.com\.tw/(zh|en|ja|es)/index\.php$ [NC]
+RewriteRule ^ https://www.santung.com/%1/ [R=301,L,QSD]
+
+
+# ========== 追加部分 START =================================
+
+# === 其他請求：維持原 altaweb02 → demo 的邏輯 ===
+RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+RewriteCond %{REQUEST_URI} !^/www\.wealthy-hill\.com\.tw/ [NC]
+RewriteRule ^(.*)$ - [L]
+
+# === 最後：/www.santung.com/ → 強制導首頁 ===
+RewriteCond %{HTTP_HOST} ^(?:www\.)?altaweb02\.com\.tw$ [NC]
+RewriteCond %{REQUEST_URI} ^/www\.wealthy-hill\.com\.tw/ [NC]
+RewriteRule ^www\.wealthy-hill\.com\.tw/.*$ https://www.santung.com/ [R=301,L,QSD]
+
+# ========== 追加部分 END ===================================
+
+
+
+############################################
+# B) 正式站 規範化（網址強制 .html）
+############################################
+
+# 實體檔案與目錄 → 不處理
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# ==========================================================
+# ① 將 .php 對外轉成 .html  (外部轉址)
+# ==========================================================
+RewriteCond %{THE_REQUEST} \s/+([^\s?]+)\.php(?:[?\s]|$) [NC]
+RewriteCond %1 !^index$ [NC]
+RewriteRule ^ %1.html [R=301,L,QSD]
+
+# ==========================================================
+# ②-2 針對路由層級頁面自動補上 .html（多層 path）
+#     例如 /zh/products/seamer → /zh/products/seamer.html
+#          /zh/products/seamer/CS-101 → /zh/products/seamer/CS-101.html
+# ==========================================================
+RewriteCond %{REQUEST_URI} ^/(zh|en|ja|es)/.+$ [NC]
+RewriteCond %{REQUEST_URI} !\.html$ [NC]
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [R=301,L]
+
+# ==========================================================
+# ③ 無副檔名網址 → 如果存在對應的 xxx.html → 自動補上
+# ==========================================================
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+
+# ==========================================================
+# ② 內部 rewrite：.html → index.php?path=xxxx
+# ==========================================================
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)\.html$ index.php?path=$1 [L,QSA]
+
+# ==========================================================
+# ③ 首頁網址無 .html → 自動補上
+# ==========================================================
+RewriteRule ^(zh|cn|en)/home/?$ /$1/home.html [R=301,L]
+
+# ==========================================================
+# ④ 搜尋頁面 rewrite
+# ==========================================================
+RewriteRule ^(zh|cn|en)/search/(.+)$ /demo/www.santung.com/$1/search?keyword=$2 [L,QSA]
+
+# ==========================================================
+# ⑤ 若非真實檔案 → 交由 index.php 路由解析
+# ==========================================================
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)$ index.php?path=$1 [L,QSA]
+
+# ==========================================================
+# ⑥ 最後 fallback：統一交給 index.php
+# ==========================================================
+RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]

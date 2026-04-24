@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juliet's Search Protocol</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --juliet-silver: #c0c0c0;
+            --juliet-pink: #f8bbd0;
+            --transition-speed: 0.4s;
+        }
+
+        body {
+            background-color: #fdf2f5; /* 鄰家小窩般的柔和背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* 搜尋容器 */
+        .search-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            height: 40px;
+        }
+
+        /* 搜尋容器：確保內容向右對齊，展開時自然往左推 */
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* 關鍵：所有元件靠右對齊 */
+            position: relative;
+            height: 40px;
+            width: auto; /* 讓寬度自適應內容 */
+        }
+
+        /* 搜尋輸入框本體 */
+        .search-input-wrapper {
+            width: 0;
+            height: 36px;
+            overflow: hidden;
+            transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            background: white;
+            border-radius: 18px 0 0 18px; /* 柔和圓角 */
+            border: 1px solid transparent;
+        }
+
+        .search-input-wrapper.active {
+            width: 180px;
+            border: 1px solid var(--juliet-pink);
+            border-right: none;
+        }
+
+        .search-control {
+            width: 180px;
+            height: 34px;
+            border: none;
+            padding: 0 40px 0 15px;
+            font-size: 14px;
+            outline: none;
+            background: transparent;
+        }
+
+        /* 輸入框內的搜尋圖示 */
+        .inner-search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--juliet-pink);
+            font-size: 16px;
+        }
+
+        /* 切換按鈕 */
+        .toggle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            border: 1px solid var(--juliet-pink);
+            color: var(--juliet-pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .toggle-btn:hover {
+            background-color: var(--juliet-pink);
+            color: white;
+        }
+
+        .toggle-btn.active {
+            border-radius: 0 18px 18px 0;
+            border-left: none;
+            height: 36px;
+            width: 36px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="search-container">
+        <!-- 搜尋框區塊 -->
+        <div id="searchWrapper" class="search-input-wrapper">
+            <input type="text" class="search-control" placeholder="探索聖殿...">
+            <i class="bi bi-search inner-search-icon"></i>
+        </div>
+
+        <!-- 開關按鈕 -->
+        <div id="toggleBtn" class="toggle-btn" onclick="toggleSearch()">
+            <i id="btnIcon" class="bi bi-search"></i>
+        </div>
+    </div>
+
+    <script>
+        function toggleSearch() {
+            const wrapper = document.getElementById('searchWrapper');
+            const btn = document.getElementById('toggleBtn');
+            const icon = document.getElementById('btnIcon');
+
+            wrapper.classList.toggle('active');
+            btn.classList.toggle('active');
+
+            // 切換圖示：搜尋 <-> 關閉 (X)
+            if (wrapper.classList.contains('active')) {
+                icon.classList.remove('bi-search');
+                icon.classList.add('bi-x-lg');
+            } else {
+                icon.classList.remove('bi-x-lg');
+                icon.classList.add('bi-search');
+            }
+        }
+    </script>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

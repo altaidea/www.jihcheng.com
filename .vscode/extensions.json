@@ -1,0 +1,27 @@
+{
+  "recommendations": [
+    "ritwickdey.live-sass",
+    "syler.sass-indented",
+    "ecmel.vscode-html-css",
+
+    "mhutchie.git-graph",
+    "donjayamanne.githistory",
+    "McCarter.start-git-bash",
+
+    "ritwickdey.LiveServer",
+
+    "kisstkondoros.vscode-gutter-preview",
+    "mechatroner.rainbow-csv",
+    "redhat.vscode-xml",
+
+    "MS-CEINTL.vscode-language-pack-zh-hant",
+
+    "christian-kohler.path-intellisense",
+    "gruntfuggly.todo-tree"
+  ],
+  "unwantedRecommendations": [
+    "sibiraj-s.vscode-scss-formatter",
+    "esbenp.prettier-vscode",
+    "rvest.vs-code-prettier-eslint"
+  ]
+}

@@ -1,0 +1,53 @@
+// 基礎顏色變數 (Base Colors) --------------------------------------------------
+// 品牌與主要色系
+$color-sky-blue: #00d4ff;     // 亮天藍
+$color-industrial-orange: #ff9800; // 工業橘
+$color-corporate-blue: #27348E; // 沉穩藍 (企業色)
+$color-lavender: #777fb7;     // 薰衣草1
+
+// 中性色系 (Grayscale)
+$color-gray-darkest: #1a1a1a; // 極深灰
+$color-gray-charcoal: #333333; // 深炭灰
+$color-gray-metallic: #e6e9f0; // 金屬鋁灰
+$color-gray-iceland: #f4f7fa;  // 冰島灰白
+$color-gray-bg-light: #f7f7f7; // 產品底色
+
+// 社群媒體色
+$color-youtube: #ff0000;
+$color-facebook: #0866ff;
+
+// 語意化變數 (Semantic Variables) --------------------------------------------------
+// 主色調設定
+$color-primary: $color-corporate-blue;
+$color-secondary: $color-sky-blue;
+$color-accent: $color-industrial-orange;
+
+// 文字顏色
+$text-main: $color-gray-darkest;
+$text-muted: $color-gray-charcoal;
+
+// 背景與邊框
+$body-bg: $color-gray-bg-light;
+$card-bg: #ffffff;
+$border-color: $color-gray-metallic;
+
+// 狀態/特殊功能
+$link-color: $color-sky-blue;
+$hover-color: lighten($color-corporate-blue, 10%);
+
+$color-primary-dark: #000D57;
+$color-primary-light: #89CDFF;
+
+$color-clear: #D2E4FF;
+$color-clear-light: #D9D9D9;
+
+$color-icon: #00796b;
+
+$color-text: #333333;
+$color-dark: #231815;
+$color-light: #666666;
+
+$color-line-deep: #AFAFAF;
+$color-line-card: #DDDDDD;
+$color-line-btn: #999999;
+$color-line: $color-clear-light;

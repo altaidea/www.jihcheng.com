@@ -1,0 +1,100 @@
+//多行截斷工具
+//範例：@include line-clamp(2); // 顯示 2 行
+@mixin line-clamp($lines: 1) {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+    line-clamp: $lines; // for newer specs (not widely supported yet)
+}
+//取消多行截斷工具
+//@include remove-line-clamp;
+@mixin remove-line-clamp {
+    display: block;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    -webkit-box-orient: unset;
+    overflow: visible;
+    text-overflow: unset;
+}
+
+//@include list-style(disc, 2rem);
+//@include list-style(); // 使用預設值 decimal 和 1.5rem
+@mixin list-style($type: decimal, $padding: 1.5rem) {
+    list-style-type: $type;
+    padding-left: $padding;
+}
+
+/* ---------------------------
+
+            GSAP
+
+--------------------------- */
+// 啟用自訂游標時，隱藏系統游標（避免輸入框問題）
+// html.has-custom-cursor,
+// html.has-custom-cursor body {
+//   cursor: none;
+// }
+
+// 容器：固定在視口，忽略滑鼠事件
+// #custom-cursor {
+//   position: fixed;
+//   inset: 0;
+//   pointer-events: none;
+//   z-index: 9999;
+
+//   .cursor-dot,
+//   .cursor-ring {
+//     opacity: 0; // 初始透明，避免閃爍
+//     transition: opacity 0.2s ease;
+//     position: fixed;
+//     transform: translate(-50%, -50%);
+//     will-change: transform;
+//   }
+
+  // 鼠標樣貌
+  // .cursor-dot {
+  //   width: 8px;
+  //   height: 8px;
+  //   border-radius: 50%;
+  //   background: $primary;
+  //   border: 3px $primary solid;
+  // }
+
+  // .cursor-ring {
+  //   width: 36px;
+  //   height: 36px;
+  //   border-radius: 50%;
+  //   border: 2px solid #cccccc;
+  //   opacity: 0;                 // 與 .cursor-dot 同步初始透明
+  //   will-change: transform, opacity, border-color;
+  //   transition: opacity 0.2s ease, border-color 0.2s ease;
+  // }
+
+  // :root {
+  //   --cursor-color: $primary;            // 預設主色
+  //   --cursor-hover-color: #00c4ff;       // 預設 hover 色（可改）
+  // }
+
+  // #custom-cursor {
+  //   .cursor-dot {
+  //     background: var(--cursor-color, $primary);
+  //     border: 3px solid var(--cursor-color, $primary);
+  //   }
+  //   .cursor-ring {
+  //     border: 2px solid var(--cursor-color, $primary);
+  //   }
+  // }
+
+  // 反差（可選）：亮色系偏好時用 difference 以提升對比
+  // @media (prefers-color-scheme: light) {
+  //   mix-blend-mode: difference;
+
+  //   .cursor-dot,
+  //   .cursor-ring {
+  //     background: $primary;
+  //     border-color: $primary;
+  //   }
+  // }
+// }

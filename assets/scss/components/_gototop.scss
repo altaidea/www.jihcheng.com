@@ -1,0 +1,364 @@
+//GO TO TOP
+// basic
+// #gototop {
+//   display: none; /* 預設隱藏 */
+//   position: fixed;
+//   right: 20px;
+//   bottom: 80px;
+//   width: 50px;
+//   height: 50px;
+//   z-index: 9;
+//   // background-color: white;
+//   color: #fff;
+//   font-weight: bolder;
+//   text-align: center;
+//   line-height: 50px;
+//   font-size: 16px;
+//   // border-radius: 50%;
+//   cursor: pointer;
+//   transition: opacity 0.3s;
+//   // border: #CCCCCC 1px solid;
+//   color: $color-primary;
+//   transition: all .3s ease-in-out;
+
+//   &::before {
+//     content: '↑';
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     height: 100%;
+//     font-size: 20px;
+//     font-weight: 300;
+//     color: $color-primary
+//   }
+    
+//   &:hover {
+//     transform: translateY(-8px) scale(1.05);
+//     // background-color: white;
+//     border-color: $color-primary;
+//     // box-shadow: 0 10px 25px rgba($color-primary, 0.2);
+//   }
+// }
+
+// New Type
+$border-color: #CCCCCC;
+$bg-white: #FFFFFF;
+
+// style1
+// #gototop {
+//     display: none;
+//     position: fixed;
+//     right: 25px;
+//     bottom: 85px;
+//     width: 36px;
+//     height: 36px;
+//     // background: #ffffff;
+//     // border: 1px solid #EEEEEE;
+//     border-radius: 50%;
+//     cursor: pointer;
+//     transition: all 0.5s ease;
+//     // box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+//     z-index: 99999;
+
+//     &::before {
+//         content: 'keyboard_double_arrow_up';
+//         font-family: 'Material Symbols Sharp';
+//         font-weight: 200;
+//         font-size: 24px;
+//         color: $color-primary;
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//         height: 100%;
+//     }
+
+//     &:hover {
+//         transform: translateY(-8px) scale(1.05);
+//         // border-color: $color-primary;
+//         // 營造一種「光學折射」的陰影
+//         // box-shadow: 0 0 0 4px rgba($color-primary, 0.1), 0 12px 24px rgba($color-primary, 0.2);
+//     }
+// }
+
+// style2
+// #gototop {
+//     display: none;
+//     position: fixed;
+//     right: 25px;
+//     bottom: 80px;
+//     width: 36px;
+//     height: 36px;
+//     z-index: 99;
+//     // background-color: transparent; // 初始透明
+//     cursor: pointer;
+//     // border: 1px solid $border-color;
+//     border-radius: 50%;
+//     transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+//     filter: brightness(1.5);
+//     mix-blend-mode: difference;
+//     // mix-blend-mode: exclusion;
+
+//     @media (max-width: 576px) {
+//       right: .5rem;
+//       bottom: 60px;
+//     }
+
+//     &::before {
+//         content: '\f102'; // Font Awesome: fa-angles-up
+//         font-family: "Font Awesome 6 Free";
+//         font-weight: 900;
+//         position: absolute;
+//         top: 50%;
+//         left: 50%;
+//         transform: translate(-50%, -45%); // 初始位置微低
+//         font-size: 2rem;
+//         color: #7cffe9;
+//         transition: all 0.3s ease;
+//     }
+
+//     &:hover {
+//         // background-color: $color-primary;
+//         // border-color: $color-primary;
+//         transform: translateY(-8px);
+//         // box-shadow: 0 10px 25px rgba($color-primary, 0.3);
+
+//         &::before {
+//             // color: #ffffff;
+//             transform: translate(-50%, -55%); // 懸停時向上躍動
+//         }
+//     }
+// }
+
+// style2-1
+// #gototop {
+//     display: none;
+//     position: fixed;
+//     right: 32px;
+//     bottom: 86px;
+//     // width: 36px;
+//     // height: 36px;
+//     z-index: 99;
+//     cursor: pointer;
+//     border-radius: 50%;
+//     transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+    
+//     // 保持原本的高級感濾鏡與混合模式
+//     filter: brightness(1.5);
+//     mix-blend-mode: difference;
+
+//     &::before {
+//         // 切換為 Material Symbols Sharp
+//         content: 'keyboard_double_arrow_up'; 
+//         font-family: 'Material Symbols Sharp';
+        
+//         // 核心設定：讓 Icon 看起來更細緻的關鍵
+//         font-variation-settings: 
+//             'FILL' 0,    // 不填滿，更清爽
+//             'wght' 200,  // 極細權重 (100-700)，200 能營造出精品感
+//             'GRAD' 0, 
+//             'opsz' 40;   // 針對 40px 等級進行光學優化
+
+//         position: absolute;
+//         top: 50%;
+//         left: 50%;
+//         transform: translate(-50%, -45%);
+        
+//         // 尺寸微調：Material Symbols 的 2rem 通常比 FA 飽滿
+//         // 設定 24px - 28px 之間能讓 36px 的容器視覺最平衡
+//         font-size: 36px; 
+//         color: #7cffe9;
+//         transition: all 0.3s ease;
+        
+//         // 消除字體平滑毛邊，確保極細線條依然清晰
+//         -webkit-font-smoothing: antialiased;
+//     }
+
+//     &:hover {
+//         transform: translateY(-8px);
+
+//         &::before {
+//             // 懸停時除了位移，可以稍微增加粗細感作為反饋
+//             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 40;
+//             transform: translate(-50%, -55%);
+//         }
+//     }
+// }
+
+// style2-2
+// #gototop {
+//     display: none;
+//     position: fixed;
+//     right: 0px;
+//     bottom: 60px;
+//     width: 64px; 
+//     height: 64px;
+//     z-index: 999;
+//     cursor: pointer;
+    
+//     // 您的工業冷調濾鏡
+//     filter: brightness(1.5);
+//     mix-blend-mode: difference;
+//     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+//     &::before {
+//         /* 對應 Font Awesome \f102 的 Google Icon */
+//         content: 'keyboard_double_arrow_up'; 
+//         font-family: 'Material Symbols Sharp';
+        
+//         display: block;
+//         position: absolute;
+//         top: 50%;
+//         left: 50%;
+//         transform: translate(-50%, -50%);
+        
+//         // 核心設定：實現「細」與「大」
+//         font-size: 56px;           // 更大的視覺佔位
+//         font-variation-settings: 
+//             'FILL' 0, 
+//             'wght' 100,            // 極致纖細（100-700，100 最細）
+//             'GRAD' -25,            // 負梯度讓線條在混合模式下更銳利
+//             'opsz' 48;             // 針對大尺寸優化光學細節
+
+//         color: #7cffe9;
+//         -webkit-font-smoothing: antialiased;
+//         transition: all 0.4s ease;
+//     }
+
+//     &:hover {
+//         transform: translateY(-15px);
+//         &::before {
+//             color: #ffffff;
+//             // 懸停時稍微加粗一點點作為回饋
+//             font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 48;
+//         }
+//     }
+// }
+#gototop {
+    display: none; // 由原本的 JS 控制顯示
+    position: fixed;
+    right: 0px;
+    bottom: 60px;
+    width: 64px; 
+    height: 64px;
+    z-index: 999;
+    cursor: pointer;
+    
+    // 保持主人的工業冷調濾鏡
+    filter: brightness(1.5);
+    mix-blend-mode: difference;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+    // 針對內部的 SVG 進行細節鎖定
+    .gototop {
+        width: 100%;
+        height: 100%;
+        color: $color-primary-light; // 保持主人的冷青色
+        transition: all 0.4s ease;
+        
+        // 模擬極致纖細感 (wght 100)
+        stroke-width: 1; 
+        
+        // 加入 iOS 與 Chrome 的渲染優化
+        -webkit-font-smoothing: antialiased;
+        // filter: drop-shadow(0 0 2px rgba(124, 255, 233, 0.3));
+    }
+
+    &:hover {
+        transform: translateY(-15px);
+        
+        .gototop {
+            color: #ffffff;
+            stroke-width: 1; // 懸停時稍微加粗作為回饋，對應 wght 200
+            // filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+        }
+    }
+}
+
+/* 額外優化：利用字體加載 API 或簡單的 CSS 確保順滑 */
+// .fonts-loaded #gototop::before {
+//     visibility: visible;
+// }
+
+// style3
+// #gototop {
+//     display: none;
+//     position: fixed;
+//     right: 30px;
+//     bottom: 85px;
+//     width: 36px;
+//     height: 36px;
+//     background: #ffffff;
+//     border: 1px solid #eeeeee;
+//     border-radius: 12px; // 現代微圓角
+//     cursor: pointer;
+//     transition: all 0.3s ease;
+//     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+//     &::before {
+//         content: '\f1d8'; // Font Awesome: fa-paper-plane
+//         font-family: "Font Awesome 6 Free";
+//         font-weight: 400; // 使用 Regular 感度
+//         font-size: 18px;
+//         color: $color-primary;
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//         height: 100%;
+//         transform: rotate(-45deg); // 調整角度指向左上方
+//         transition: all 0.3s ease;
+//     }
+
+//     &:hover {
+//         transform: translateY(-8px) rotate(10deg); // 輕微傾斜增加靈動感
+//         border-color: $color-primary;
+        
+//         &::before {
+//             color: $color-primary;
+//             animation: plane-fly 0.3s ease-in-out forwards;
+//         }
+//     }
+// }
+
+// @keyframes plane-fly {
+//     0% { transform: translate(0, 0) rotate(-45deg); opacity: 1; }
+//     50% { transform: translate(15px, -15px) rotate(-45deg); opacity: 0; }
+//     51% { transform: translate(-15px, 15px) rotate(-45deg); opacity: 0; }
+//     100% { transform: translate(0, 0) rotate(-45deg); opacity: 1; }
+// }
+
+// #gototop {
+//     display: none;
+//     position: fixed;
+//     right: 25px;
+//     bottom: 80px;
+//     width: 36px;
+//     height: 36px;
+//     background: transparent;
+//     cursor: pointer;
+
+//     &::before {
+//         content: '\e0b7'; // fa-bolt-lightning
+//         font-family: "Font Awesome 6 Free";
+//         font-weight: 900;
+//         font-size: 24px;
+//         color: $color-primary;
+//         opacity: 0.5;
+//         transition: all 0.2s ease;
+//     }
+
+//     &:hover {
+//         transform: translateY(-8px) scale(1.1);
+//         &::before {
+//             opacity: 1;
+//             // 產生瞬間的高壓發光感
+//             filter: drop-shadow(0 0 12px $color-primary);
+//             animation: spark 0.4s ease-out;
+//         }
+//     }
+// }
+
+// @keyframes spark {
+//     0% { filter: brightness(1); }
+//     50% { filter: brightness(3) blur(1px); }
+//     100% { filter: brightness(1); }
+// }

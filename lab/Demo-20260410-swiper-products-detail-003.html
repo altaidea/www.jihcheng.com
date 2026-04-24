@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品系列 Swiper - Bootstrap 5 整合</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <style>
+        :root {
+            --primary-color: #1a2a5a; /* 圖片中標題的深藍色 */
+            --card-bg: #f5f6f7; /* 圖片中卡片的灰色 */
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: sans-serif;
+            color: #333;
+        }
+
+        /* 標題樣式 */
+        .section-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Swiper 卡片樣式 */
+        .swiper-container {
+            width: 100%;
+            height: auto;
+            padding-bottom: 50px; /* 為分頁器預留空間 */
+        }
+
+        .product-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .product-image-box {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* 保持正方形 */
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .product-slide:hover .product-image-box {
+            box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+        }
+
+        .product-title {
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: normal;
+            margin-top: 0.5rem;
+        }
+
+        /* 手機版圓圈按鈕 (Pagination) */
+        .swiper-pagination {
+            display: none; /* 預設隱藏 */
+        }
+
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: #999;
+            opacity: 1;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary-color);
+        }
+
+        /* 隱藏左右導航按鈕 */
+        .swiper-button-prev,
+        .swiper-button-next {
+            display: none !important;
+        }
+
+        /* 回應式斷點設定 */
+        @media (max-width: 991px) {
+            .swiper-pagination {
+                display: block; /* 手機版顯示 */
+                bottom: 10px !important;
+            }
+            .section-title {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-5 py-5">
+    <h2 class="section-title">Products Series</h2>
+
+    <div class="swiper products-series-swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide product-slide">
+                <div class="product-image-box">
+                    <img src="path/to/cartoning_machine_image.jpg" alt="Cartoning Machine" class="img-fluid d-block" style="display: none;">
+                    <div class="placeholder-text text-muted" style="font-size: 0.8rem;">Image Placeholder</div>
+                </div>
+                <h3 class="product-title">Cartoning Machine</h3>
+            </div>
+
+            <div class="swiper-slide product-slide">
+                <div class="product-image-box">
+                    <img src="path/to/filling_machine_image.jpg" alt="Filling Machine" class="img-fluid d-block" style="display: none;">
+                    <div class="placeholder-text text-muted" style="font-size: 0.8rem;">Image Placeholder</div>
+                </div>
+                <h3 class="product-title">Filling Machine</h3>
+            </div>
+
+            <div class="swiper-slide product-slide">
+                <div class="product-image-box">
+                    <img src="path/to/capping_machine_image.jpg" alt="Capping Machine" class="img-fluid d-block" style="display: none;">
+                    <div class="placeholder-text text-muted" style="font-size: 0.8rem;">Image Placeholder</div>
+                </div>
+                <h3 class="product-title">Capping Machine</h3>
+            </div>
+
+            <div class="swiper-slide product-slide">
+                <div class="product-image-box">
+                    <img src="path/to/labeling_machine_image.jpg" alt="Labeling Machine" class="img-fluid d-block" style="display: none;">
+                    <div class="placeholder-text text-muted" style="font-size: 0.8rem;">Image Placeholder</div>
+                </div>
+                <h3 class="product-title">Labeling Machine</h3>
+            </div>
+
+            <div class="swiper-slide product-slide">
+                <div class="product-image-box">
+                    <img src="path/to/air_washing_machine_image.jpg" alt="Air Washing Machine" class="img-fluid d-block" style="display: none;">
+                    <div class="placeholder-text text-muted" style="font-size: 0.8rem;">Image Placeholder</div>
+                </div>
+                <h3 class="product-title">Air Washing Machine</h3>
+            </div>
+        </div>
+
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  // 初始化 Swiper
+  var swiper = new Swiper('.products-series-swiper', {
+  slidesPerView: 1, /* 預設（最窄的手機版） */
+  spaceBetween: 20, /* 卡片間距 */
+  pagination: {
+  el: '.swiper-pagination',
+  clickable: true,
+  },
+  // 回應式斷點
+  breakpoints: {
+  // >= 992px
+  992: {
+  slidesPerView: 3,
+  spaceBetween: 24,
+  },
+  // >= 1200px
+  1200: {
+  slidesPerView: 3,
+  spaceBetween: 30,
+  },
+  // >= 1366px
+  1366: {
+  slidesPerView: 4,
+  spaceBetween: 30,
+  },
+  // >= 1440px
+  1440: {
+  slidesPerView: 5,
+  spaceBetween: 30,
+  },
+  },
+  });
+</script>
+
+</body>
+</html>

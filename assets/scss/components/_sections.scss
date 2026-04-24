@@ -1,0 +1,95 @@
+.section{
+  padding-top: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
+}
+
+// 聯絡我們區塊
+.contact-section{
+  position: relative;
+
+  /* 1. 您的核心圖片與路徑 */
+  background-image: 
+    linear-gradient(rgba($color-primary, 0.7), rgba($color-primary, 0.7)), 
+    url(../img/home/20190426142028fwmTzhY.jpg);
+    
+  /* 2. 視差核心：將圖片固定在視窗，不隨滾動條移動 */
+  background-attachment: fixed;
+  
+  /* 3. 您的美學設定：混色與對齊 */
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  /* 您的雙重混合模式設定 */
+  /* 'multiply' 會讓圖片變深且帶有藍色調，適合背景 */
+  /* 'overlay' 則會保留更多高光細節，您可以根據視覺喜好切換 */
+  background-blend-mode: multiply;
+
+  /* 4. 確保區塊有足夠高度展現效果 */
+  // padding: 100px 0; 
+
+  @media (max-width: 1024px) {
+    /* 在平板與手機端關閉固定效果，避免 iOS 產生的畫面閃爍或縮放異常 */
+    background-attachment: scroll;
+  }
+  
+  .container{
+    
+    @media (max-width: 576px) {
+      // 給一點左右間距，不要讓容器直接貼螢幕
+      padding-left: 1.5rem; 
+      padding-right: 1.5rem;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+
+      .contact-btn{
+        margin-top: 2.5rem;
+      }
+    }
+
+    .inner-block{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      @media (min-width: 768px) {
+        min-height: 160px;
+      }
+
+      p{
+        color: white;
+        font-size: 2rem;
+        text-align: center;
+
+        @media (max-width: 1366px) {
+          font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+          font-size: 1.5rem;
+        }
+
+        @media (max-width: 576px) {
+          font-size: 1.25rem;
+          line-height: 1.25;
+          text-shadow: 0 5px 10px rgba($color-primary, 0.7);
+        }
+
+        &:last-child{
+          margin-bottom: 0;
+        }
+      }
+      
+      // &.text-block{
+      //   @media (min-width: 768px) {
+      //     justify-content: flex-start;
+      //   }
+      // }
+
+      // &.btn-block{
+      //   @media (min-width: 768px) {
+      //     justify-content: flex-end;
+      //   }
+      // }
+    }
+  }
+}

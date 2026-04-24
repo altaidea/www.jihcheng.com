@@ -1,0 +1,367 @@
+// 最新消息卡片共用 -------------------------------------------
+.news-card {
+  /* 確保卡片寬度由 Swiper 邏輯控制 */
+  width: calc(100% - 2rem);
+
+  border: none;
+  background: transparent;
+  border-radius: 12px; // 更有質感的圓角
+  height: 100%; // 確保等高
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+  justify-content: space-between; // 讓按鈕永遠在底部
+  
+  // 基礎細膩陰影：營造飄浮在平面上的高級感
+  // box-shadow: 0 8px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  overflow: hidden;
+
+  // 圖片容器
+  .news-card-img {
+      border-bottom: #DDD 1px solid;
+      // 去除底部圓角，讓它與 Body 銜接
+      border-radius: 12px 12px 0 0; 
+      overflow: hidden;
+
+      img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+  }
+
+  .news-card-body {
+      flex-grow: 1;
+      padding: 1rem 1.25rem 1.25rem; // 增加呼吸空間
+      display: flex;
+      flex-direction: column;
+
+      .news-date {
+          // margin-bottom: 0.75rem;
+          font-weight: 500;
+          font-size: 0.85rem;
+          color: #999;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          transition: color 0.3s ease;
+      }
+
+      .news-title {
+          font-size: 1.75rem;
+          font-weight: 700;
+          line-height: 1;
+          color: $color-text;
+          transition: color 0.3s ease;
+          
+          // 兩行截斷
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          // height: 3rem; // 固定高度確保對齊
+          margin-bottom: 1.25rem;
+
+          @media (max-width: 1400px) {
+            font-size: 1.25rem;
+            height: auto;
+          }
+      }
+
+      .news-excerpt {
+          font-size: 1.25rem;
+          color: #333; // 提高易讀性
+          line-height: 1.5;
+          transition: color 0.3s ease;
+          
+          // 三行截斷
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+
+          // p { margin-bottom: 0; }
+
+          ul {
+            list-style: none;
+            padding-left: 0;
+            li { margin-bottom: 0.25rem; }
+          }
+      }
+
+      .new-more-btn {
+        font-weight: 600;
+        color: $color-primary;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+
+        align-self: flex-end;
+
+        &.marquee-style {
+          display: inline-flex; // 讓按鈕寬度隨內容
+          align-items: center;
+          gap: 12px; // 文字與圓圈的間距
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          text-decoration: none;
+
+          // 1. 文字屬性
+          .btn-text{
+            font-size: 1rem;
+          }
+
+          // 2. 圓形容器
+          .icon-circle {
+            width: 36px;
+            height: 36px;
+            background-color: transparent;
+            border: 1px solid $color-primary; // 預設邊框顏色
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; // ⚡ 關鍵：鎖住邊界
+            position: relative;
+            transition: all 0.3s ease;
+
+            // 3. 圖標群組（負責位移）
+            .icon-group {
+              display: flex;
+              align-items: center;
+              gap: 16px; // ⚡ 關鍵：兩個箭頭之間的間距，需大於圓圈寬度
+              position: absolute;
+              
+              left: calc(-1rem - 16px);
+              /* 預設不發動動畫，或發動很慢的動畫 */
+              // animation: marqueeArrow 1.5s linear infinite; 
+              // animation-play-state: paused; // 預設暫停
+
+              i {
+                color: $color-primary; // 預設圖標顏色
+                font-weight: 600;
+                line-height: 1;
+                flex-shrink: 0; // 防止圖標被壓縮
+                transition: color 0.3s ease;
+              }
+            }
+          }
+        }
+      }
+  }
+
+  // ⭐ 核心 Hover 演繹：注入靈魂的動態感
+  &:hover {
+    transform: translateY(-12px); // 向上抽離
+    background: #ffffff;
+    // 深邃且柔軟的擴散陰影
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+
+    .news-card-img {
+        img{
+          transform: scale(1.05); // 圖片微幅向外擴張
+        }
+    }
+
+    .news-card-body {
+        .news-date {
+            color: $color-primary; // 日期點亮
+        }
+
+        .news-title {
+            color: $color-primary; // 標題主色亮起
+        }
+
+        .new-more-btn {
+          letter-spacing: 1px; // 文字稍微撐開
+          i {
+            transform: translateX(5px); // 箭頭向右滑動
+          }
+          .icon-circle {
+            background-color: $color-primary; // 圓圈上色
+            border-color: transparent; // 隱藏邊框
+            box-shadow: 0 5px 15px rgba($color-primary, 0.3); // 增加微妙光暈
+
+            .icon-group {
+              // 啟動無縫循環動畫
+              animation: marqueeArrow .85s linear infinite; 
+              
+              i {
+                color: white; // 箭頭變白
+              }
+            }
+          }
+        }
+    }
+  }
+}
+
+// ⭐ 跑馬燈關鍵幀動畫
+@keyframes marqueeArrow {
+    0% {
+        /* 起始點：第一個箭頭在中間 */
+        transform: translateX(0px);
+    }
+    100% {
+        /* 結束點：第一個箭頭完全移出，第二個箭頭精準卡位 */
+        /* 計算公式：-(圖標寬度 + gap) */
+        transform: translateX(calc(1rem + 20px));
+    }
+}
+
+// 行動裝置，沒有hover
+@media (max-width: 991.98px){
+  .title{
+    margin-left: 1rem;
+  }
+
+  .swiper-wrapper{
+    padding-top: 2rem;
+  }
+
+  .news-card{
+    background: #ffffff;
+    .news-card-body {
+      .news-date {
+          color: $color-primary; // 日期點亮
+      }
+
+      .news-title {
+          color: $color-primary; // 標題主色亮起
+      }
+
+      .new-more-btn {
+        letter-spacing: 1px; // 文字稍微撐開
+        i {
+          transform: translateX(5px); // 箭頭向右滑動
+        }
+        &.marquee-style {
+          .icon-circle {
+            background-color: $color-primary; // 圓圈上色
+            border-color: transparent; // 隱藏邊框
+            box-shadow: 0 5px 15px rgba($color-primary, 0.3); // 增加微妙光暈
+
+            .icon-group {
+              // 啟動無縫循環動畫
+              animation: marqueeArrow .85s linear infinite; 
+              
+              i {
+                color: white; // 箭頭變白
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+// 最新消息卡片共用 END ---------------------------------------
+
+// 內頁設定
+.news{
+  .breadcrumb{
+      margin-bottom: 0;
+  }
+
+  .news-section{
+      padding-top: var(--page-padding-top);
+      
+      overflow: hidden;
+
+      .section{
+        padding-top: 0;
+      }
+  }
+
+  .news-list{
+
+    a{
+        display: block; 
+        margin-bottom: 80px; // 稍微縮小間距，增加視覺緊湊度
+        text-decoration: none; // 移除底線
+        color: inherit;
+
+        @media (max-width: 991.98px){
+          display: flex;
+        }
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .card-block{
+        padding: 0 20px;
+        justify-content: center;
+    }
+
+    // 最新消息 內頁特製
+    .news-card {
+      border: #333 1px solid;
+
+      .news-card-img{
+        border-radius: 0;
+      }
+
+      &:hover {
+        background: $color-primary;
+        color: white;
+
+        .news-card-body {
+            .news-excerpt {
+                color: white;
+            }
+
+            .news-title {
+                color: white;
+            }
+
+            .new-more-btn {
+              color: white;
+              .icon-circle {
+                border-color: white; // 隱藏邊框
+                box-shadow: 0 5px 15px rgba($color-primary, 0.3); // 增加微妙光暈
+              }
+            }
+        }
+      }
+    }
+  }
+
+  .news-detail-section{
+      // margin-top: 110px;
+      // margin-bottom: 60px;
+
+      h1{
+          margin-bottom: 2rem;
+      }
+
+      .news-content{
+          margin-top: 60px;
+          margin-bottom: 60px;
+          min-height: 20dvh;
+
+          p{
+              font-size: 1.25rem;
+
+              @media screen and (max-width: 992px){
+                  font-size: 1rem;
+              }
+          }
+      }
+  }
+
+  .btn-outline-secondary:hover{
+      background-color: $color-primary;
+  }
+
+  @media screen and (max-width: 992px){
+  main{
+          padding: 0 1rem;
+      }
+  }
+}

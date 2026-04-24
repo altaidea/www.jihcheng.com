@@ -1,0 +1,22 @@
+# ======================================
+# 正式站 robots.txt 最佳化版
+# ======================================
+User-agent: *
+
+# ---- 禁止 Google 索引 404 與 error（強制）----
+Disallow: /404
+Disallow: /404.html
+Disallow: /error
+Disallow: /error.html
+
+# ---- 禁止直接抓 PHP（你目前系統已 ban .php，但做預防）----
+Disallow: /*.php$
+
+# ---- 避免奇怪 Query 參數造成收錄問題（安全強化）----
+Disallow: /*?*
+Disallow: /*&*
+
+# ======================================
+# Sitemap（正式站）
+# ======================================
+Sitemap: https://https://www.jihcheng.com/sitemap.xml

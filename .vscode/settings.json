@@ -1,0 +1,56 @@
+{
+  "liveServer.settings.NoBrowser": false,
+  "liveServer.settings.ignoreFiles": [
+    ".vscode/**",
+    "**/node_modules/**",
+    ".htaccess"
+  ],
+
+  "liveSassCompile.settings.formats": [
+    {
+      "format": "expanded",
+      "extensionName": ".css",
+      "savePath": "/assets/css"
+    },
+    {
+      "format": "compressed",
+      "extensionName": ".min.css",
+      "savePath": "/assets/css"
+    }
+  ],
+
+  "liveSassCompile.settings.generateMap": true,
+
+  /* 強制指定監聽的主檔案路徑，確保依賴鏈完整 */
+  "liveSassCompile.settings.includeItems": [
+    "/assets/scss/style.scss" 
+  ],
+
+  "workbench.colorTheme": "Dark Modern",
+
+  "editor.rulers": [80, 120],
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 120,
+  "editor.wordBreak": "normal",
+
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": false,
+
+  "[php]": {
+    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare",
+  },
+  "[html]": {
+  },
+  "[scss]": {
+  },
+
+  // 效能優化：防止掃描過深導致的延遲
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/vendor": true,
+    "**/assets/css": true,
+    "**/.git": true
+  }
+}

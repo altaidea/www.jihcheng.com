@@ -1,0 +1,12 @@
+# 禁止列出目錄
+Options -Indexes
+
+# 禁止外部直接訪問 JSON / TXT / CSV
+<FilesMatch "\.(json|txt|csv)$">
+  Require all denied
+</FilesMatch>
+
+# 允許必要 PHP
+<Files "save_json.php">
+  Require all granted
+</Files>

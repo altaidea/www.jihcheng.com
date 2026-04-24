@@ -1,0 +1,991 @@
+:root {
+  --jc-silver-grey: #999999;
+  --nav-height: 70px;
+  --top-height: 48px;
+  --jc-transition-speed: 0.4s;
+  --transition-speed: 0.3s;
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ⚡版型核心
+.top-header {
+  z-index: 9999;
+
+  @media (min-width: 1560px){
+    .container-fluid{ padding: 0 calc(8%);}
+  }
+  @media (max-width: 1440px){
+    .container-fluid{ padding: 0 calc(4%);}
+  }
+  @media (max-width: 1366px){
+    .container-fluid{ padding: 0 calc(6%);}
+  }
+
+  // xl:1200
+  @media (max-width: 1200px) {
+    .container-fluid{ padding: 0 calc(2%) 0 calc(6%);}
+  }
+}
+
+.navbar{
+  margin-top: var(--top-height);
+
+  @media (min-width: 1560px){
+    padding: 1rem 8%;
+  }
+  @media (max-width: 1440px){
+    padding: 1rem 4%;
+  }
+  @media (max-width: 1366px){
+    padding: 1rem 6%;
+  }
+
+  // @media (max-width: 996px){
+  //   margin-top: 0;
+  // }
+}
+
+@media (min-width: 1200px) {
+  .navbar-expand-xl .navbar-nav{
+    align-items: center;
+  }
+}
+
+// 1.header
+// --- Top Header (功能層) ---
+.top-header {
+  background-color: $color-primary;
+  
+  color: white;
+  font-size: 1.125rem;
+
+  @media (max-width: 1440px) {
+    font-size: 1rem;
+  }
+  
+  position: fixed;
+  top: 0; 
+  z-index: 1060;
+
+  width: 100%; 
+  height: var(--top-height);
+  
+  transition: transform 0.3s ease;
+
+  display: flex; 
+  align-items: center;
+
+  // 頂部語言切換按鈕
+  .top-tools{
+    .container-fluid{ padding: 0 0;}
+    .dropdown { position: relative;}
+    .dropdown-toggle {
+      display: flex;
+      align-items: center; 
+      gap: .25rem;
+      border: none; 
+      background: transparent; 
+      color: rgba(255, 255, 255, .8); 
+      &::after { 
+        vertical-align: middle; 
+      }
+      &:hover{
+        color: white;
+      }
+    }
+  }
+
+  // 頂部語言切換選單特定樣式
+  .dropdown-menu {
+    border-radius: 0;
+    border: none; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background-color: $color-primary;
+
+    a{
+      line-height: 1;
+      color: white;
+    }
+
+    min-width: 80%; // 寬度會導致左右偏移
+    
+    /* ⚡ 核心修正：鎖定水平中心定位 */
+    // left: 50% !important; 
+    // right: auto !important;
+
+    /* ⚡ 核心修正：將基準點鎖定在右側 */
+    left: auto !important; 
+    right: 0 !important;   // 靠右對齊父元素
+
+    /* ⚡ 關鍵：將 transform 合併。
+       原本您只有 translateY，現在必須加入 translateX(-50%) 
+       這樣無論選單多寬，中心點永遠對齊父元素中心 */
+    // transform: translateX(-50%) translateY(10px);
+    transform: translateY(10px);
+
+    top: 24px;
+    margin-top: 17px !important; // 處線後最後定位的位置
+
+    display: block; /* 必須為 block 才能執行 transform 動畫 */
+    opacity: 0;
+    /* 關鍵：Visibility 處理 */
+    visibility: hidden;
+    pointer-events: none;
+    
+    /* 關閉時的過渡：visibility 要等 0.3s (延遲) 再變隱藏 */
+    transition: 
+      opacity var(--transition-speed) ease-in-out, 
+      transform var(--transition-speed) ease-in-out, 
+      visibility 0s linear var(--transition-speed); 
+    
+    // 🎯當選單開啟時 (.show)
+    &.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+
+      /* ⚡ 核心修正：開啟時也要維持 translateX(-50%) */
+      // transform: translateX(-50%) translateY(0);
+      transform: translateY(0);
+      
+      /* 開啟時的過渡：visibility 必須瞬間變為 visible (無延遲) */
+      transition: 
+        opacity var(--transition-speed) ease-in-out, 
+        transform var(--transition-speed) ease-in-out, 
+        visibility 0s linear 0s; 
+    }
+  }
+
+  .dropdown-item { 
+    color: white;
+    padding: 10px 20px; 
+    transition: 0.3s; 
+    font-size: 1rem; 
+    &:hover { 
+      background-color: white; 
+      color: $color-primary; 
+    }
+  }
+
+  // 🎯頂部搜尋按鈕
+  .search-btn { 
+    margin: 0 .5rem 0 1rem;
+    i{color: rgba(255,255,255,0.8);}
+    &:hover { i{color: white;}}
+
+    @media (max-width: 1200px) {
+      margin: 0;
+    }
+  }
+
+  // 🎯頂部電話按鈕
+  .phone-call{
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255,0.8);
+    span{
+      margin-left: .25rem;
+    }
+    &:hover { color: white; i{color: white;}}
+
+    @media (max-width: 1200px) {
+      span{
+        display: none;
+      }
+    }
+  }
+
+  // 🎯頂部社群按鈕 & 語言工具和搜尋按鈕
+  .sns-links, .top-tools{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    i{ font-size: 20px; }
+  }
+
+  @media (max-width: 1200px) {
+    .sns-links{
+      gap: 0;
+    }
+    .top-tools{
+      gap: .5rem;
+    }
+  }
+
+  // 🎯頂部社群按鈕
+  .sns-links a { 
+    margin-right: 15px; 
+    font-size: 1rem; 
+    i{ color: rgba(255, 255, 255, 0.6); }
+    &:hover{
+      i{ color: rgba(255, 255, 255, 1); }
+    }
+  }
+}
+
+// 行動裝置隱藏
+// @media (max-width: 1200px) {
+//     .top-header { display: none; }
+// }
+
+// 2.navbar
+.navbar{
+  &.fixed-top { 
+    top: var(--top-height);
+    @media (max-width: 1200px) {
+      top: 0;
+    }
+  }
+
+  a{
+    height: fit-content;
+  }
+
+  .container-fluid{
+    padding: 0;
+  }
+  /* Navbar Logo */
+  .navbar-brand{ 
+    color: $color-primary; 
+    display: flex;
+    align-items: center;
+    padding: 0;
+    line-height: 1.15;
+
+    .company-logo{
+      width: 100px;
+      height: var(--nav-height);
+    }
+
+    // 預設
+    .company-name{
+      display: inline-block;
+      margin-left: .5rem;
+      span{
+        display: block;
+        &.text-zh{
+          font-size: 2.5rem;
+          font-weight: 600;
+        }
+        &.text-en{
+          font-size: 1.4rem;
+          font-weight: 600;
+        }
+      }
+    }
+
+    @media (max-width: 992px){
+      height: 50px;
+
+      // zoom: 0.6; // iOS無效
+      .company-logo{
+        width: 60px; // 原本 100px * 0.6
+        height: auto;
+      }
+
+      .company-name{
+        margin-left: .3rem; // 原本 .5rem * 0.6
+        span {
+          &.text-zh {
+            font-size: 1.5rem; // 原本 2.5rem * 0.6
+          }
+          &.text-en {
+            font-size: .82rem; // 原本 0.95rem * 0.6
+          }
+        }
+      }
+    }
+  }
+
+  /* --- 原有邏輯：桌機版 (Large screen) --- */
+  // 下拉選單邏輯
+  @media (min-width: 1366px) {
+    .navbar-nav{
+      .nav-item{
+        margin-right: 36px;
+
+        &:last-child{
+          margin-right: 0;
+        }
+
+        .nav-link{
+          font-size: 21px;
+          transition: all .3s ease-in-out;
+          transform-origin: center center;
+          white-space: nowrap;
+
+          &:hover{
+            color: $color-primary;
+          }
+
+          &.active,
+          &.is-current{
+            font-weight: 600;
+            color: $color-primary;
+          }
+        }
+      }
+    }
+
+    /* 滑過展開邏輯 (原有代碼) */
+    // 下拉選單邏輯
+    .navbar-nav{
+      .nav-item.dropdown{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* 確保 nav-link 本身在 li 內也盡量居中 */
+        align-self: center;
+        margin-top: 1px;
+
+        .dropdown-menu{
+          display: block;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(10px);
+          transition: all var(--transition-speed) ease-in-out;
+          background: transparent; 
+          // background-color: rgba($color-primary, 1);
+          border-radius: 0;
+          border: none;
+          // box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+          position: absolute; /* 確保不推擠空間 */
+          top: calc(var(--nav-height) - 32px);
+          
+          a{
+            line-height: 1;
+            color: #FFFFFF;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover{
+              background-color: $color-lavender;
+            }
+          }
+        }
+
+        &:hover{
+          .dropdown-toggle{
+            color: $color-primary;
+            font-weight: 600;
+          }
+
+          .dropdown-menu {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(10px);
+            background: transparent; 
+            border-radius: 0 0 16px 16px;
+            overflow: hidden;
+            padding: 28px 0 0 0;
+            
+            ul{
+              background: rgba($color-primary, 1);
+              padding-bottom: 1rem;
+            }
+          }
+        }
+      }
+    }
+
+    .navbar-nav .nav-link.dropdown-toggle { cursor: default; }
+
+    /* --- 【新加入】三角形旋轉動畫 --- */
+    .navbar-nav .nav-item.dropdown .dropdown-toggle::after {
+      transition: transform var(--transition-speed) ease;
+      vertical-align: middle; /* 確保旋轉時中心點對齊 */
+    }
+
+    /* 當父層 nav-item 被 hover 時，旋轉內部的 ::after */
+    .navbar-nav .nav-item.dropdown:hover .dropdown-toggle::after {
+      transform: rotate(180deg);
+    }
+    /* ------------------------------ */
+
+    .navbar-nav .nav-link.dropdown-toggle { cursor: default; }
+  }
+
+  @media (max-width: 1360px) {     
+    .offcanvas-body .dropdown-menu {
+      position: static; 
+      display: none; 
+      width: 100%;
+      // text-align: center;
+    }
+    .offcanvas-body .dropdown-menu.show { display: block; }
+    .offcanvas-body .dropdown-item { 
+      font-size: 1.2rem; 
+    }
+  }
+
+  .offcanvas.full-screen .dropdown-menu {
+      background-color: rgba($color-primary, 1);
+      border: none;
+  }
+
+  /* --- 行動端 (Offcanvas) 絲滑度強化 --- */
+  @media (max-width: 1200px) {
+    .offcanvas-body{
+      // margin-top: 2rem;
+      padding: 0 2rem;
+
+      .navbar-nav{
+        margin-top: 2rem;
+      }
+    }
+
+    /* 1. 隱藏預設箭頭，或美化它 */
+    .offcanvas-body .dropdown-toggle::after {
+      transition: transform 0.3s ease;
+    }
+    .offcanvas-body .dropdown-toggle.show::after {
+      transform: rotate(180deg);
+    }
+
+    /* 2. 核心絲滑過渡：使用 max-height 配合 opacity */
+    .offcanvas-body .dropdown-menu {
+      display: block !important; /* 必須為 block 才能計算高度 */
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-10px);
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                  opacity 0.3s ease, 
+                  transform 0.4s ease;
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-radius: 12px;
+      /* margin: 0 1rem; */
+      padding: 0;
+    }
+
+    /* 3. 展開狀態 */
+    .offcanvas-body .dropdown-menu.show {
+      max-height: 500px; /* 給一個足夠大的預估高度 */
+      opacity: 1;
+      transform: translateY(0);
+      padding: 10px 0;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* 4. 項目進場微動效 */
+    .offcanvas-body .dropdown-item {
+      transition: 
+        background 0.2s, 
+        padding-left 0.3s ease;
+      padding: 1.5rem 20px;
+      font-size: 3rem;
+    }
+    
+    .offcanvas-body .dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.15);
+      padding-left: 2rem; /* 點擊時有向右推的物理感 */
+    }
+
+    .offcanvas.full-screen .nav-link {
+        color: white !important;
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 1rem 0;
+    }
+
+    .offcanvas.full-screen .dropdown-item {
+      color: rgba(255,255,255, 1) !important;
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+  }
+
+  @media (max-width: 768px){
+    .offcanvas-body .dropdown-item {
+      padding: .5rem 1rem;
+    }
+
+    .offcanvas.full-screen .nav-link{
+      margin: 0;
+    }
+  }
+
+  /* --- 行動端 (Offcanvas) Offcanvas 滿版修正 --- */
+  .offcanvas.offcanvas-end.full-screen {
+      width: 100% !important;
+      border: none;
+      background-color: $color-primary;
+      z-index: 1500;
+  }
+
+  .offcanvas-header{
+    .icon-logo{
+      color: white;
+      --logo-name-color: #27348e;
+    }
+    .company-name{
+      color: white;
+    }
+
+    @media (max-width: 1200px) {
+      margin-top: 48px;
+    }
+  }
+
+  /* --- 行動端 (Offcanvas) 主選單額外功能設定 --- */
+  .offcanvas-body {
+    /* 語言切換器樣式 */
+    .lang-switcher {
+      width: 100%;
+
+      .btn-lang-toggle {
+        width: 100%;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &::after { margin-left: auto; } // 讓箭頭靠右
+        &:hover { background: rgba(255, 255, 255, 0.1); }
+      }
+
+      .dropdown-menu {
+        width: 100%;
+        background-color: $color-primary;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 5px;
+
+        .dropdown-item {
+          color: rgba(255, 255, 255, 0.8);
+          padding: 20px;
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+          }
+        }
+      }
+    }
+
+    /* 搜尋 Bar 樣式 (膠囊型) */
+    .nav-search-input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      color: white;
+      &:focus { background: rgba(255, 255, 255, 0.1); color: white; border-color: $color-primary-light; box-shadow: none; }
+    }
+
+    /* 1. 標準語法 (Chrome, Safari, Edge, Opera) */
+    ::placeholder {
+      color: rgba(255, 255, 255, 0.5); /* 這裡換成您聖殿的主色或輔色 */
+      opacity: 1; /* Firefox 預設會降低透明度，務必強制設為 1 */
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* 2. 針對個別瀏覽器的私有補強 (若需極致相容) */
+    ::-webkit-input-placeholder { /* Chrome/Safari/Edge */
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    ::-moz-placeholder { /* Firefox 19+ */
+      color: rgba(255, 255, 255, 0.5);
+      opacity: 1;
+    }
+
+    /* 3. 針對特定類名的 Placeholder (例如您的搜尋框) */
+    .nav-search-input::placeholder {
+      color: rgba(255,255,255,0.7); /* 使用您的 SCSS 變數 */
+    }
+    
+    .btn-search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 1);
+      border: none;
+    }
+
+    /* 底部聯絡資訊 */
+    .nav-footer-block {
+      i{ color: white;}
+
+      .phone-number {
+        color: white;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-weight: 600;
+        &:hover { color: $color-primary-light; }
+      }
+      
+      .sns-link {
+        font-size: 1.5rem;
+        margin-right: 20px;
+        opacity: 0.7;
+        transition: 0.3s;
+        &:hover { opacity: 1; transform: translateY(-3px); color: $color-primary-light; }
+      }
+    }
+  }
+}
+
+// 3.search-accordion-layer
+// 獨立搜尋手風琴層 (解耦設計)
+.search-accordion-layer {
+    position: fixed;
+    top: calc(var(--nav-height) + var(--top-height) + 2rem);
+    left: 0; 
+    width: 100%;
+    height: 0; /* 初始高度為 0 */
+    background: $color-primary;
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+    // ⚡ 核心：未開啟時完全不接收點擊，讓底層選單可點
+    z-index: 1090;
+    pointer-events: none;
+
+    &.active { 
+      /* 展開高度 */
+      height: 80px; 
+      pointer-events: auto; // ⚡ 只有啟動時才接收點擊
+    } 
+
+    @media (max-width: 1200px) {
+      top: calc(82px + 48px);
+      z-index: 9999;
+      pointer-events: auto;
+    }
+
+    .search-inner {
+        max-width: 1200px; margin: 0 auto; height: 100%;
+        display: flex; align-items: center; padding: 0 2rem;
+        pointer-events: auto;
+    }
+    .search-input {
+      flex-grow: 1; 
+      background: transparent; 
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      color: white; 
+      padding: 10px; 
+      outline: none; 
+      font-size: 1.2rem;
+
+        // 1. 標準瀏覽器 (Chrome, Firefox, Safari, Edge)
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.6); // 建議使用帶透明度的白色，顯得更高階
+        font-weight: 300;
+        opacity: 1; // Firefox 預設會降低透明度，需強制設為 1
+      }
+
+      // 2. 針對舊版 IE/Edge 的特殊處理 (如果您的聖殿需要極致相容)
+      &:-ms-input-placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      &::-ms-input-placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      // 3. 當 input 獲得焦點 (Focus) 時，您可以讓 placeholder 變得更淡或消失
+      &:focus::placeholder {
+        transition: opacity 0.3s ease;
+        opacity: 0.3;
+      }
+    }
+    .search-close-btn { background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+}
+
+// 4.獨立漢堡按鈕動畫樣式
+.custom-hamburger {
+    width: 30px;
+    height: 22px;
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 2000; /* 高於一切，確保可點擊關閉 */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end; /* 讓內容靠右 */
+}
+
+.hamburger-line {
+  height: 2px;
+  background-color: $color-primary;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border-radius: 2px;
+}
+
+.line-1 { width: 100%; }
+.line-2 { width: 60%; } /* 中間較短 */
+.line-3 { width: 100%; }
+
+/* 漢堡變換 X 狀態 */
+.custom-hamburger.active .hamburger-line { background-color: #FFFFFF; } /* 滿版藍底時變白 */
+.custom-hamburger.active .line-1 { transform: translateY(10px) rotate(45deg); width: 100%; }
+.custom-hamburger.active .line-2 { opacity: 0; width: 0; }
+.custom-hamburger.active .line-3 { transform: translateY(-10px) rotate(-45deg); width: 100%; }
+
+@media (max-width: 1199px) {
+  .custom-hamburger { display: flex; }
+}
+
+@media (min-width: 1200px) {
+  .custom-hamburger { display: none; } /* 桌機隱藏 */
+}
+
+// /* 在您的 SASS 中找到 .sticky-navbar */
+// .sticky-navbar {
+//   // 基礎轉場
+//   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+//               background-color 0.3s ease !important;
+
+//   &.nav-hide {
+//     // 稍微增加到 110% 確保連同 Box-shadow 都隱藏乾淨
+//     transform: translateY(-110%); 
+//     // 隱藏時的速度感可以稍微緩慢一點點，顯得不突兀
+//     transition: transform 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+//   }
+
+//   // 核心修正：利用 Bootstrap 開啟時 body 會增加的類名
+//   // 強制讓 Navbar 歸位並取消所有變換，解決 Offcanvas 顯示不全
+// }
+
+// // 當 Offcanvas 開啟時，強行鎖定位置
+// body.offcanvas-open {
+//   .sticky-navbar {
+//     transform: none !important; // 使用 none 徹底重置 Stacking Context
+//     transition: none !important; // 開啟時不需要動畫干擾
+//   }
+// }
+
+// // 補足：確保固定在頂部時不抖動
+// .fixed-top {
+//   transition: inherit;
+// }
+
+// .sticky-navbar {
+//   /* 基礎轉場增加 opacity */
+//   transition: 
+//     transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), 
+//     background-color 0.3s ease,
+//     opacity 0.4s ease !important;
+  
+//   will-change: transform, opacity;
+
+//   /* ⚡ 核心：當不在頂部且出現時 (沒有 nav-hide 且不在 y=0) */
+//   /* 我們預設給它一個半透明度 */
+//   opacity: 1; 
+
+//   /* 當導覽列「喚回」顯示，且不是在頁面最頂端時 */
+//   &:not(.nav-hide):not([style*="transform: translateY(0)"]) {
+//     // 您可以根據喜好調整這個數值，0.8 是一個高級的平衡點
+//     background-color: rgba($color-primary, 0.8) !important;
+//     backdrop-filter: blur(10px); // 增加毛玻璃效果，讓半透明更具質感
+//   }
+
+//   /* ⚡ 關鍵互動：滑鼠滑入時恢復不透明 */
+//   &:hover {
+//     background-color: rgba($color-primary, 1) !important;
+//     opacity: 1 !important;
+//     backdrop-filter: blur(0px);
+//   }
+
+//   &.nav-hide {
+//     transform: translateY(-110%);
+//     opacity: 0; // 隱藏時順便淡出，更絲滑
+//   }
+// }
+
+// // 修正：當 body 有 offcanvas 時，強制不透明
+// body.offcanvas-open .sticky-navbar {
+//   opacity: 1 !important;
+//   background-color: rgba($color-primary, 1) !important;
+// }
+
+/* ⚡ 父層容器：作為整體的「濾鏡層」 */
+.sticky-navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1060;
+  
+  // 核心轉場：確保 opacity 與 filter 的變化如同絲綢
+  transition: 
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s ease,
+    backdrop-filter 0.4s ease !important;
+
+  will-change: transform, opacity;
+
+  /* 初始狀態：全顯 */
+  opacity: 1;
+  backdrop-filter: blur(0px);
+
+  /* ⚡ 狀態：捲動喚回 (幽靈模式) */
+  &.nav-show-ghost {
+    // 這裡只動整體的透明度，子層的底色會隨之變淡，但「比例」不變
+    opacity: 0.5; 
+    backdrop-filter: blur(12px); // 增加毛玻璃質感
+
+    @media (max-width: 996px) {
+      opacity: 1; 
+      backdrop-filter: blur(0px);
+    }
+  }
+
+  /* ⚡ 狀態：滑鼠滑入 (恢復實體) */
+  &:hover {
+    opacity: 1 !important;
+    backdrop-filter: blur(0px) !important;
+  }
+
+  /* ⚡ 狀態：捲動隱藏 */
+  &.nav-hide {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+}
+
+/* ⚡ 子層元件：保持絕對的原始樣式 */
+.top-header, .navbar {
+  // 這裡不需要設定透明或 inherit，讓它們維持您原本設定的 $color-primary
+  // 這樣它們的色彩層次感會被完美保留
+  transition: none;
+}
+
+.top-header{
+  z-index: 9999;
+}
+
+// 修正 Offcanvas 開啟時：強制回歸最紮實的狀態
+// body.offcanvas-open .sticky-navbar {
+//   opacity: 1 !important;
+//   transform: translateY(0) !important;
+//   backdrop-filter: blur(0px) !important;
+// }
+
+// // // 當 Offcanvas 開啟時，強行鎖定位置
+// body.offcanvas-open {
+//   .sticky-navbar {
+//     transform: none !important; // 使用 none 徹底重置 Stacking Context
+//     transition: none !important; // 開啟時不需要動畫干擾
+//   }
+// }
+
+/* ⚡ 核心修正：確保 Offcanvas 真正「滿版」且不被擠壓 */
+.offcanvas.full-screen.show {
+  width: 100% !important;
+  height: 100vh !important; // 強制佔滿視窗高度
+  visibility: visible !important;
+  transform: none !important; // 移除所有位移，確保它死死釘在畫面上
+  transition: opacity 0.4s ease-in-out !important; // 改用淡入淡出更絲滑
+}
+
+/* ⚡ 關鍵修正：解決 Bootstrap 鎖定捲軸導致的 Navbar 縮排 */
+body.offcanvas-open {
+  overflow: hidden !important;
+  padding-right: 0 !important; // 強制移除 Bootstrap 自動計算的補償寬度
+
+  .sticky-navbar {
+    width: 100% !important;
+    right: 0 !important;
+    left: 0 !important;
+    transform: translateY(0) !important; // 開啟時 Navbar 絕對不能隱藏
+  }
+}
+
+// /* 如果您的 Navbar 有使用 fixed-top，也要確保它不被 body 的 padding 影響 */
+.fixed-top {
+  right: 0 !important;
+  left: 0 !important;
+}
+
+// 新增搜尋欄位
+.home a{
+  &.search-sp-btn{
+    display: none;
+  }
+}
+.search-sp-btn{
+  display: none;
+}
+
+.is-menu-open {
+  .search-btn {
+    display: none; // 桌面端消失
+  }
+
+  a{
+    &.search-sp-btn{
+      display: inline-block;
+    }
+  }
+  .search-sp-btn {
+    display: inline-block; // 行動端出現
+  }
+}
+
+.offcanvas-body{
+  .nav-tools-block {
+      display: block;      // 確保它是 block
+      max-height: 0;       // 使用 max-height 做高度動畫
+      opacity: 0;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none; // 關閉時不可點擊
+
+      &.active {
+          max-height: 200px; // 預設展開高度，可依內容調整
+          opacity: 1;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+          pointer-events: auto; // 開啟時恢復點擊
+      }
+  }
+}
+
+// 針對 Products 首頁下拉校對
+.home{
+ .navbar{
+  @media (min-width: 1366px) {
+    .navbar-nav .nav-item.dropdown{
+      .dropdown-toggle{
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+      .dropdown-menu{
+        top: calc(var(--nav-height) - 34px);
+      }
+    }
+  }
+ }
+}
+
+@media (max-width: 1366px) {
+  .navbar {
+    .offcanvas.show{
+      .offcanvas-body{
+        .form-control{
+          padding-right: 3rem;
+        }
+        .btn-search-icon{
+          color: $color-primary;
+        }
+      }
+    }
+  }
+}

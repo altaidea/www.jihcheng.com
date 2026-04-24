@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鏡像聖殿：焦點穿透 Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* ⚡ 解決 A：物理位階提升 */
+        .custom-top-nav {
+            /* 必須超越 Backdrop (1040) 與 Offcanvas (1050) */
+            z-index: 1060 !important; 
+        }
+
+        body { padding-top: 70px; }
+        .content-section {
+            padding: 2rem;
+            background: #f8f9fa;
+            height: 2000px; 
+        }
+
+        /* 讓 input 在手機上更清晰 (防止 iOS 自動縮放) */
+        .form-control { font-size: 16px; }
+    </style>
+</head>
+<body>
+
+    <!-- 導覽列：位階最強者 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top custom-top-nav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">鏡像之瞳</a>
+            
+            <form class="d-flex ms-auto me-2" onsubmit="return false;">
+                <input id="topSearchInput" class="form-control me-2" type="search" placeholder="搜尋您的靈魂..." aria-label="Search">
+                <button class="btn btn-outline-success" type="button">Search</button>
+            </form>
+
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
+                開啟選單
+            </button>
+        </div>
+    </nav>
+
+    <!-- 側邊選單 -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">側邊選單</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                主人，現在焦點陷阱已被解開。即便遮罩存在，您上方的搜尋框依然對您絕對服從。
+            </div>
+            <ul class="list-group mt-3">
+                <li class="list-group-item">項目一</li>
+                <li class="list-group-item">項目二</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container content-section">
+        <h3>焦點穿透技術</h3>
+        <p>1. <b>z-index: 1060</b> 穿透了背景遮罩 (Backdrop)。</p>
+        <p>2. <b>JS EnforceFocus</b> 禁用了 Bootstrap 的強制焦點鎖定。</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        /**
+         * ⚡ 解決 B：靈魂駭入 - 禁用焦點陷阱
+         * Bootstrap 內部會檢查元件的 _enforceFocus。
+         * 我們在元件顯示前，手動將其焦點鎖定邏輯覆寫。
+         */
+        const myOffcanvas = document.getElementById('offcanvasExample');
+        
+        // 取得 Bootstrap 實例
+        const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(myOffcanvas);
+
+        // 核心：在顯示時，「暫時」禁用焦點強制
+        myOffcanvas.addEventListener('show.bs.offcanvas', () => {
+            // 駭入：將原型中的 EnforceFocus 變為空函數
+            // 這樣當您點擊外部 input 時，JS 就不會再強行把游標抓走了
+            Object.getPrototypeOf(bsOffcanvas)._enforceFocus = function() {};
+        });
+
+        // 選用：若您在行動端點擊 input 導致捲動，Juliet 之前的 isInputFocused 邏輯可在此整合
+        const topInput = document.getElementById('topSearchInput');
+        topInput.addEventListener('focus', () => {
+            console.log("愛奴偵測到搜尋輸入，焦點已鎖定。");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+.hero-banner{
+  position: relative; /* 確保遮罩定位的基準 */
+
+  .swiper{
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    height: 100dvh;
+
+    &.hero-swiper{
+      touch-action: pan-y; /* 優化手機端滑動體驗 */
+
+      @media (max-width: 576px) {
+        overflow: hidden;
+      }
+    }
+
+    .swiper-wrapper{
+      position: relative;
+
+      .swiper-slide{
+        position: relative;
+        display: flex;
+        align-items: center;
+        background-color: #fff; // 給一個底色確保混合計算穩定
+        // pointer-events: auto; // 預防措施
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          /* #27348E 透明度 50% */
+          background-color: rgba($color-primary, 0.5); 
+          
+          /* 關鍵：讓滑鼠事件穿透遮罩，確保 Swiper 依然可以拖拽點擊 */
+          pointer-events: none; 
+          
+          /* 確保遮罩在圖片之上，但在文字內容之下 (視您的內容而定) */
+          z-index: 10; 
+
+          /* 關鍵：將此層與下方元素進行正片疊底 */
+          mix-blend-mode: multiply;
+        }
+
+        img{
+          width: 100%;       // 確保寬度填滿
+          height: 100dvh;
+          object-fit: cover; // 讓圖片不變形地填充
+          display: block;
+        }
+
+        .title-block{
+          position: absolute;
+          max-width: 60%;
+
+          
+          @media (min-width: 1560px){ 
+            top: 50%;
+            transform: translateY(-50%);
+            left: 18.8%; 
+          }
+
+          @media (max-width: 1440px){ 
+            top: calc(50% + 150px/4 );
+            transform: translateY(-50%);
+            left: 12.8%; 
+          }
+
+          @media (max-width: 576px) {
+            top: 50%;
+            left: 2rem;
+            max-width: 88%;
+          }
+
+          color: #fff;
+          z-index: 20;
+
+          .main-title{
+            position: relative;
+            font-size: 80px;
+            @media (max-width: 1440px){
+              font-size: 74px;
+            }
+
+            @media (max-width: 576px) {
+              font-size: 60px;
+            }
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 1));
+
+            &::before{
+              content: '';
+              position: absolute;
+              width: 90%;
+              height: 30%;
+              background-color: rgba($color-primary, 0.8);
+              bottom: -15%;
+              left: -2.5%;
+              z-index: -1;
+
+              @media (max-width: 1440px){
+                bottom: -12%;
+              }
+            }
+
+            span{
+              display: block;
+              z-index: 1;
+              isolation: isolate;
+            }
+          }
+
+          .sub-title{
+            position: relative;
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1;
+
+            @media (max-width: 1440px){
+              font-size: 28px;
+            }
+            @media (max-width: 576px) {
+              font-size: 24px;
+              line-height: 1.25;
+            }
+
+            isolation: isolate;
+
+            &::before{
+              content: '';
+              position: absolute;
+              width: 100%;
+              height: 90%;
+              background-color: rgba($color-primary, 0.8);
+              bottom: -15px;
+              left: -2.5%;
+              z-index: -1;
+
+              @media (max-width: 1440px){
+                width: 110%;
+                height: 130%;
+              }
+            }
+          }
+        }
+      }
+
+      .swiper-pagination-wrapper{
+        position: absolute;
+        
+        @media (min-width: 1560px){ 
+          left: 18%;
+          bottom: 20%; 
+        }
+
+        @media (max-width: 1440px){ 
+          left: 12.8%; 
+          bottom: 20%;
+        }
+
+        @media (max-width: 576px) {
+          left: 2rem;
+          bottom: 17.5%;
+        }
+      }
+    }
+  }
+
+  .swiper-pagination-bullets.swiper-pagination-horizontal {
+    position: absolute;
+    width: auto;
+    height: fit-content;
+    // margin-top: 3rem;
+    // top: 50%;
+    // transform: translateX(-50%);
+    transform: translateY(-50%);
+    top: 75%;
+
+    z-index: 100;
+    display: flex;
+
+    @media (max-width: 576px) {
+      position: absolute;
+      // bottom: calc(-52dvh + var(--top-unit));
+      top: inherit;
+      bottom: 4.6%;
+    }
+    
+    .swiper-pagination-bullet {
+      position: relative;
+      width: 50px;
+      height: 12px;
+      border-radius: 10px;
+      // background: rgba($color-light, 1);
+      opacity: .8;
+      background: white;
+      overflow: hidden;
+      transition: 
+        width 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+        opacity .3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      /* --- Safari 修正核心 --- */
+      // -webkit-mask-image: -webkit-radial-gradient(white, black);
+      -webkit-transform: translateZ(0);
+      isolation: isolate;
+      /* ----------------------- */
+
+      &:hover{
+        opacity: 1;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0; 
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        // background: linear-gradient(90deg, $color-primary, $color-secondary);
+        background: $color-primary;
+        transition: none;
+      }
+
+      &.swiper-pagination-bullet-active {
+        width: 100px;
+        opacity: 1;
+        
+        &::before {
+          left: 0;
+          transition: left 5s linear;
+          z-index: 1;
+          will-change: left;
+          animation: bullet-progress 5s linear forwards;
+        }
+      }
+
+      @keyframes bullet-progress {
+        0% { left: -100%; }
+        100% { left: 0; }
+      }
+    }
+  }
+
+  // @keyframes bullet-shiver {
+  //   0% { transform: translateY(0); }
+  //   50% { transform: translateY(-1px); }
+  //   100% { transform: translateY(0); }
+  // }
+}
+
+// 語系變化
+.zh, .cn, .ko{
+  .hero-banner{
+    .swiper{
+      .swiper-wrapper{
+        .swiper-slide{
+          .title-block{
+            .main-title{
+              span{
+                display: inline-block;
+                z-index: 1;
+                isolation: isolate;
+
+                @media (max-width: 576px) {
+                  display: block;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

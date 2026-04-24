@@ -1,0 +1,310 @@
+<?php
+  // $reCAPTCHAScripts[] = "https://www.google.com/recaptcha/api.js?render=6LepoHUUAAAAAJ_yBEpIDCIeIci7Oys3V7hVzve8";
+
+  /**
+   * System v2.6 - Contact Section
+   * 優化重點：Headers防禦、路徑邏輯修正、Textarea渲染修正、JS事件整合
+   */
+  if (session_status() === PHP_SESSION_NONE) {
+      session_start();
+  }
+  date_default_timezone_set('Asia/Taipei');
+
+  // 初始化預設值
+  $lang = $lang ?? 'zh';
+  $basePath = $basePath ?? '';
+
+
+  if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+  }
+  $csrf_token = $_SESSION['csrf_token'];
+
+  function imgVer($path)
+  {
+    return file_exists($_SERVER['DOCUMENT_ROOT'] . $path) ? filemtime($_SERVER['DOCUMENT_ROOT'] . $path) : time();
+  }
+?>
+
+<section class="page-wrapper-inner">
+
+  <section class="contact-form-section">
+    <div class="container custom-form-container">
+      <div class="form-wrapper">
+        <p class="form-intro">
+          <?= $langStrings['contact_form_intro'] ?>
+        </p>
+        
+        <!-- 表單開始 -->
+        <form id="contactForm" method="POST" action="<?= $basePath ?>/captcha.php">
+          <!-- 交給後端判斷 -->
+          <!-- <div style="display:none;"><input type="text" name="website_url" value=""></div> -->
+          <input type="hidden" name="lang" value="<?= $lang ?>">
+          <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+          <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
+
+          <!-- inquiryForm -->
+          <div class="row gutter-40 inquiryForm"> 
+            <div class="col-md-6 mb-36">
+              <label class="form-label required"><?= $langStrings['contact_subject'] ?></label>
+              <input type="text" class="form-control" placeholder="<?= $langStrings['placeholder_subject'] ?>" name="contact_subject" required>
+            </div>
+            
+            <!-- ⚡ 關鍵：這會強制讓後面的內容換行，保持 Subject 獨佔一行 -->
+            <div class="d-none d-md-block w-100"></div>
+
+            <div class="col-md-6 mb-36">
+              <label class="form-label required"><?= $langStrings['contact_country'] ?></label>
+              <input type="text" class="form-control" name="contact_country" required>
+            </div>
+            <div class="col-md-6 mb-36">
+              <label class="form-label required"><?= $langStrings['contact_name'] ?></label>
+              <input type="text" class="form-control" name="contact_name" required>
+            </div>
+            <div class="col-md-6 mb-36">
+              <label class="form-label required"><?= $langStrings['contact_company_name'] ?></label>
+              <input type="text" class="form-control" name="contact_company_name" required>
+            </div>
+            <div class="col-md-6 mb-36">
+              <label class="form-label required"><?= $langStrings['contact_address'] ?></label>
+              <input type="text" class="form-control" name="contact_address" required>
+            </div>
+            <div class="col-md-6 mb-36">
+              <label class="form-label required"><?= $langStrings['contact_tel'] ?></label>
+              <input type="tel" class="form-control" name="contact_tel" required>
+            </div>
+            <div class="col-md-6 mb-36">
+              <label class="form-label required"><?= $langStrings['contact_email'] ?></label>
+              <input type="email" class="form-control" name="contact_email" required>
+            </div>
+            <div class="col-12 mb-5">
+              <label class="form-label required"><?= $langStrings['contact_content'] ?></label>
+              <textarea class="form-control" rows="5" placeholder="<?= $langStrings['placeholder_contact_content'] ?>" name="contact_content" required></textarea>
+            </div>
+            <div class="col-12 text-center">
+              <button type="submit" id="submitBtn" class="btn btn-send-inquiry js-submit-btn" 
+                      data-loading="<?= $lang === 'en' ? 'Sending...' : ($lang === 'cn' ? '提交中...' : '送出中...') ?>">
+                  <?= $langStrings['contact_submit'] ?? 'Submit' ?>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.4013685080545!2d121.41384420000001!3d24.9864741!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34681d1a880d4d03%3A0xf0d41e1a6c51ac2d!2z57SA5q2j5qmf5qKw5pyJ6ZmQ5YWs5Y-4L0ppaCBDaGVuZyBNYWNoaW5lcnk!5e0!3m2!1szh-TW!2stw!4v1775714699678!5m2!1szh-TW!2stw" width="100%" height="236" style="border:0; display: block; vertical-align: middle; margin: 0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+</section>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6LepoHUUAAAAAJ_yBEpIDCIeIci7Oys3V7hVzve8"></script>
+<!-- <script>
+  grecaptcha.ready(function() {
+    grecaptcha.execute('6LepoHUUAAAAAJ_yBEpIDCIeIci7Oys3V7hVzve8', {action: 'contactForm'})
+      .then(function(token) {
+        document.getElementById('recaptchaResponse').value = token;
+      });
+  });
+</script> -->
+
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (!form || !submitBtn) return;
+    
+    form.addEventListener('submit', function(e) {
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      // 鎖定按鈕與顯示 Loading
+      const loadingText = submitBtn.getAttribute('data-loading');
+      
+      // 這裡不需要 e.preventDefault()，因為我們要讓它自然跳轉到 captcha.php
+      // 10ms 的延遲足以讓瀏覽器捕捉到提交動作，同時改變按鈕狀態
+      setTimeout(() => {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${loadingText}`;
+      }, 10);
+    });
+  });
+</script> -->
+
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (!form || !submitBtn) return;
+    
+    form.addEventListener('submit', function(e) {
+      // 1. 基本 HTML5 欄位驗證
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return; // 格式不對，不執行後續動作
+      }
+
+      // 2. 視覺回饋與防連點
+      // 注意：這裡我們「不使用」e.preventDefault()，讓表單自然送出
+      const loadingText = submitBtn.getAttribute('data-loading');
+      
+      // 鎖定按鈕，防止點擊第二次
+      // 建議使用 setTimeout 稍微延遲 10ms 禁用，確保瀏覽器能順利觸發 submit 動作
+      setTimeout(() => {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${loadingText}`;
+      }, 10);
+    });
+  });
+</script> -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const responseInput = document.getElementById('recaptchaResponse');
+
+    if (!form || !submitBtn) return;
+    
+    form.addEventListener('submit', function(e) {
+      // --- A. 基本驗證 ---
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      
+      e.preventDefault(); // 攔截預設送出動作
+
+      // --- B. 防連點：立即啟動 UI 鎖定 ---
+      const originalText = submitBtn.innerHTML; // 備份原本文字
+      const loadingText = submitBtn.getAttribute('data-loading');
+      
+      submitBtn.disabled = true; // 鎖定按鈕不可點擊
+      // 加入 Spinner 動畫 + 讀取中文字
+      submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${loadingText}`;
+
+      // --- C. 安全定時器 (防止 Google API 沒回應) ---
+      const safetyTimeout = setTimeout(function() {
+        if (submitBtn.disabled) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+          alert("Connection slow, please try again.");
+        }
+      }, 10000); // 10秒後若沒跳轉則解鎖
+
+      // --- D. 執行 reCAPTCHA ---
+      grecaptcha.ready(function() {
+        grecaptcha.execute('6LepoHUUAAAAAJ_yBEpIDCIeIci7Oys3V7hVzve8', {
+          action: 'contact'
+        }).then(function(token) {
+          clearTimeout(safetyTimeout); // 成功取得 Token，取消超時警告
+          
+          if (responseInput) {
+            responseInput.value = token;
+          }
+          
+          // --- E. 正式送出 ---
+          // 注意：使用原生 form.submit() 不會再次觸發此 submit 監聽器，避免無限迴圈
+          form.submit(); 
+          
+        }).catch(function(error) {
+          // 若 reCAPTCHA 拋出錯誤
+          clearTimeout(safetyTimeout);
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+          console.error('reCAPTCHA Error:', error);
+          alert("Security verification failed. Please check your network.");
+        });
+      });
+    });
+  });
+</script>
+
+<script>
+  // document.addEventListener('DOMContentLoaded', function() {
+  //   const form = document.getElementById('contactForm');
+  //   const submitBtn = document.getElementById('submitBtn');
+  //   const textarea = document.getElementById('contact_content');
+
+  //   if (!form || !submitBtn) return;
+    
+  //   // --- 整合表單提交、防連點與 reCAPTCHA ---
+  //   form.addEventListener('submit', function(e) {
+  //     e.preventDefault(); // 攔截預設送出
+
+  //     if (!form.checkValidity()) {
+  //       form.reportValidity();
+  //       return;
+  //     }
+
+  //     const originalText = submitBtn.innerHTML;
+  //     const loadingText = submitBtn.getAttribute('data-loading');
+
+  //     // 鎖定按鈕
+  //     submitBtn.disabled = true;
+  //     submitBtn.innerHTML = loadingText;
+
+  //     // 執行 reCAPTCHA 驗證
+  //     grecaptcha.ready(function() {
+  //       grecaptcha.execute('6LepoHUUAAAAAJ_yBEpIDCIeIci7Oys3V7hVzve8', {
+  //         action: 'contact'
+  //       }).then(function(token) {
+  //         document.getElementById('recaptchaResponse').value = token;
+  //         form.submit(); // 正式送出
+  //       }).catch(function() {
+  //         // 若驗證失敗或網路異常，恢復按鈕
+  //         submitBtn.disabled = false;
+  //         submitBtn.innerHTML = originalText;
+  //         alert("Security check failed, please check your network connection.");
+  //       });
+  //     });
+  //   });
+  // });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (!form || !submitBtn) return;
+    
+    form.addEventListener('submit', function(e) {
+      // 1. 基本 HTML5 欄位驗證
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return; // 格式不對，不執行後續動作
+      }
+
+      // 2. 視覺回饋與防連點
+      // 注意：這裡我們「不使用」e.preventDefault()，讓表單自然送出
+      const loadingText = submitBtn.getAttribute('data-loading');
+      
+      // 鎖定按鈕，防止點擊第二次
+      // 建議使用 setTimeout 稍微延遲 10ms 禁用，確保瀏覽器能順利觸發 submit 動作
+      setTimeout(() => {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${loadingText}`;
+      }, 10);
+    });
+  });
+</script>
+<script>
+// 防止連點
+// document.addEventListener('DOMContentLoaded', function () {
+//   var form = document.getElementById('contactForm');
+//   if (!form) return;
+
+//   var submitBtn = form.querySelector('.js-submit-btn');
+//   if (!submitBtn) return;
+
+//   form.addEventListener('submit', function () {
+//     // ✅ 同步鎖住（這一刻已經防止連點）
+//     submitBtn.disabled = true;
+//     submitBtn.innerText = submitBtn.getAttribute('data-loading') || 'Sending...';
+//   });
+// });
+</script>

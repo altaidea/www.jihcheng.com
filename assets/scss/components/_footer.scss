@@ -1,0 +1,300 @@
+footer{
+  background: $text-muted;
+  color: white;
+
+  a {
+    color: white; 
+    display: inline-block; // 讓 a 具備寬高屬性，但只包裹內容
+    text-decoration: none; // 移除預設底線
+    line-height: 0;        /* 關鍵：消除行內元素底部的微小縫隙 */
+      &:hover {
+        color: $color-lavender; // 懸停時變更為主色調
+      }
+  }
+
+  .icon-logo{
+    color: white;
+    --logo-name-color: #333333;
+  }
+
+  .container{
+    padding-top: 60px;
+    padding-bottom: 40px;
+
+    @media (max-width: 1560px) {
+      padding-left: 6rem;
+      padding-right: 6rem;
+    }
+
+    @media (max-width: 1440px) {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+
+    @media (max-width: 1366px) {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    @media (max-width: 768px) {
+      // 給一點左右間距，不要讓容器直接貼螢幕
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-bottom: 0;
+    }
+
+    .footer-company-block{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .logo-block{
+      display: flex;
+      column-gap: .5rem;
+      align-items: center;
+      // filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      padding-right: var(--footer-menu-padding-y);
+
+      height: 66px;
+
+      .company-logo{
+        width: 86px;
+        height: 100%;
+      }
+
+      .company-name{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        span{
+          display: block;
+          &.text-zh{
+            font-size: 2.5rem;
+            font-weight: 600;
+            line-height: 1.15;
+          }
+          &.text-en{
+            font-size: 1.415rem;
+            font-weight: 600;
+            line-height: 1.15;
+          }
+        }
+      }
+
+      @media (max-width: 576px){
+        .company-name{
+          span{
+            &.text-zh{
+              font-size: 1.85rem;
+            }
+            &.text-en{
+              font-size: 1.015rem;
+            }
+          }
+        }
+      }
+    }
+
+    // 在 footer 內的樣式確保聯繫資訊的連結色彩一致
+    .company-info-block {
+      padding-right: 1rem;
+      ul{
+        margin-top: 1.5rem;
+
+        li {
+          display: flex;
+          align-items: flex-start;
+
+          &:hover{
+            color: $color-lavender; // 懸停時變更為主色調
+
+            i{
+              color: $color-lavender; // 懸停時變更為主色調
+            }
+          }
+          a{
+            line-height: 1.5;
+            &:hover{
+              font-weight: inherit;
+            }
+          }
+
+          .contact-icon {
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
+          }
+        }
+        @media (max-width: 576px) {
+          margin-top: 0;
+
+          li{
+            padding: 0 0 .625rem 0;
+          }
+        }
+      }
+    }
+
+    .footer-menu-products{
+      border-left: white 1px solid;
+
+      display: flex;
+      justify-content: center;
+
+      @media (max-width: 576px) {
+        justify-content: flex-start;
+        margin-bottom: 2rem;
+        border-left: none;
+      }
+
+      h3{
+        font-size: 32px;
+        font-weight: bold;
+      }
+
+      ul{
+        margin-top: 1.5rem;
+
+        li{
+          margin-bottom: .7rem;
+
+          a{
+            display: inline-block; // 建議改為 inline-block，寬度隨文字長度，更易控
+            position: relative;
+            transition: transform .3s ease-in-out;
+            line-height: 1;
+
+            &::before{
+              content: '-';
+              position: absolute;
+              top: 50%;
+              // 將 '-' 定位在左側邊界之外，避免它推擠文字
+              left: -1.2rem;
+              opacity: 0;
+              // 使用 transform 同時處理垂直居中和位移，並加入微小的水平偏移
+              transform: translateY(-50%);
+              transition: opacity .3s ease, transform .3s ease;
+              pointer-events: none; // 避免偽元素干擾鼠標事件
+            }
+
+            &:hover{
+              transform: translateX(1.5rem);
+              background-color: transparent;
+              color: $color-lavender;
+
+              &::before{
+                opacity: 1;
+                transform: translateY(-50%) translateX(.5rem);
+              }
+            }
+
+            @media (max-width: 576px) {
+              font-size: 1.25rem;
+              transform: translateX(1.5rem);
+              &::before{
+                opacity: 1;
+                transform: translateY(-50%) translateX(.5rem);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .footer-menu{
+      border-left: white 1px solid;
+
+      display: flex;
+      justify-content: center;
+
+      @media (max-width: 576px) {
+        justify-content: flex-start;
+        border-left: none;
+        margin-bottom: 2rem;
+      }
+
+      ul{
+        li{
+          padding-bottom: 1.625rem;
+
+          @media (max-width: 576px) {
+            padding-bottom: 1rem;
+          }
+
+          a{
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 1;
+
+            display: block;
+            &:hover{
+              color: $color-lavender; // 懸停時變更為主色調
+            }
+          }
+
+          // 20260302新增
+          // 社群圖示專用樣式
+          &.social-links {
+            display: flex;
+            gap: 1.5rem;      // 圖示之間的間距
+            align-items: center;
+            padding-top: 0.5rem;
+
+            a {
+              font-size: 28px; // 稍微縮小圖示尺寸，避免過於突兀
+              padding: 0;      // 取消原本連結的內距
+              
+              &::before {
+                display: none; // 移除您原本設定的 '-' 偽元素
+              }
+              
+              &:hover {
+                color: $color-lavender; // 懸停時變更為主色調
+                padding-left: 0; // 取消原本 hover 時的位移效果
+                transform: translateY(-3px); // 改為輕微上浮感
+                transition: transform 0.3s ease, color 0.3s ease;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .copyright{
+    background: $text-muted;
+    color: white;
+    font-size: 1rem;
+    border-top: white 1px solid;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      font-size: .8rem;
+    }
+
+  }
+}
+
+// body{
+//   &.zh{
+//     footer{
+//       .container{
+//         .footer-menu{
+//           ul{
+//             li{
+//               padding-bottom: 2.5rem;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
