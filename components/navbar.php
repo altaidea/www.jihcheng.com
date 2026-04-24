@@ -84,32 +84,38 @@ $firstSegment = explode('/', $safePath)[0];
         </div>
 
         <!-- 語言切換控制 -->
-        <?php if (defined('USE_MULTILANG') && USE_MULTILANG): ?>
+        <?php 
+          if (defined('USE_MULTILANG') && USE_MULTILANG): 
+            // 定義一個局部陣列，不要動到全域變數
+            $langTextMap = array(
+                'zh' => '繁中',
+                'cn' => '简中',
+                'en' => 'EN',
+                'ko' => '한국어'
+            );
+        ?>
         <div class="dropdown me-2">
 
           <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
             <i class="bi bi-globe2 me-1"></i>
             <?php 
-                // 根據當前 $lang 變數動態顯示按鈕文字
-                echo  ($lang === 'zh') ?  '繁中' : 
-                      (($lang === 'cn') ? '简中' : 
-                      (($lang === 'ko') ? '한국어' : 'EN'));
+              // 直接從對應表抓，如果找不到就顯示預設
+              echo isset($langTextMap[$lang]) ? $langTextMap[$lang] : 'EN'; 
             ?>
           </button>
 
           <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-            <?php if ($lang !== 'zh'): ?>
-            <li><a class="dropdown-item" href="<?= buildUrl($safePath, 'zh') ?>" data-lang="繁中">繁中</a></li>
-            <?php endif; ?>
-            <?php if ($lang !== 'cn'): ?>
-            <li><a class="dropdown-item" href="<?= buildUrl($safePath, 'cn') ?>" data-lang="简中">简中</a></li>
-            <?php endif; ?>
-            <?php if ($lang !== 'en'): ?>
-            <li><a class="dropdown-item" href="<?= buildUrl($safePath, 'en') ?>" data-lang="EN">EN</a></li>
-            <?php endif; ?>
-            <?php if ($lang !== 'ko'): ?>
-            <li><a class="dropdown-item" href="<?= buildUrl($safePath, 'ko') ?>" data-lang="한국어">한국어</a></li>
-            <?php endif; ?>
+            <?php 
+            // 使用一個獨立的變數名 $code，不要用 $lang
+            foreach ($langTextMap as $code => $text): 
+                if ($lang === $code) continue; // 跳過當前語系
+            ?>
+              <li>
+                <a class="dropdown-item" href="<?= buildUrl($safePath, $code) ?>">
+                  <?= $text ?>
+                </a>
+              </li>
+            <?php endforeach; ?>
           </ul>
 
         </div>

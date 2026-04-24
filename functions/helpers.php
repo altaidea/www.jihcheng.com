@@ -1,45 +1,50 @@
 <?php
 if (!function_exists('buildUrl')) {
-    /**
-     * 生成規範化的多語系網址
-     * 修正：強制排除實體路徑 (Physical Path) 混入
-     */
-    function buildUrl(string $path = '', string $lang = null): string {
-        global $basePath, $defaultLang, $supportedLangs;
+  /**
+   * 生成規範化的多語系網址
+   * 修正：強制排除實體路徑 (Physical Path) 混入
+   */
+  function buildUrl(string $path = '', string $lang = null): string {
+    global $basePath, $defaultLang, $supportedLangs;
 
-        // 1. 取得顯示語系映射
-        $langMap = ['zh' => 'zh-TW', 'en' => 'en'];
+    // 1. 取得顯示語系映射
+    $langMap = [
+      'zh' => 'zh-TW',
+      'cn' => 'cn',
+      'en' => 'en',
+      'ko' => 'ko'
+    ];
 
-        // 2. 核心防禦：確保 basePath 不含實體路徑 (如 C:/...)
-        // 如果 basePath 意外包含了硬碟代號，則嘗試修復它
-        $safeBase = $basePath;
-        if (preg_match('/^[a-zA-Z]:/', $safeBase)) {
-            // 僅保留 URL 部分，移除實體路徑特徵
-            $safeBase = preg_replace('/^[a-zA-Z]:.*htdocs/i', '', $safeBase);
-        }
-
-        $urlBase = rtrim($safeBase, '/');
-
-        // 3. 路徑與語系清洗
-        $path = trim($path, '/');
-        $currentLang = $lang ?? ($GLOBALS['lang'] ?? $defaultLang);
-        $validLang = in_array($currentLang, $supportedLangs) ? $currentLang : $defaultLang;
-        $displayLang = isset($langMap[$validLang]) ? $langMap[$validLang] : $validLang;
-
-        // 4. 補完 .html (排除首頁)
-        if ($path !== '' && !preg_match('/\.html$/i', $path)) {
-            $path .= '.html';
-        }
-
-        // 5. 組裝完整網址
-        if (defined('USE_MULTILANG') && USE_MULTILANG === true) {
-            $finalPath = ($path === '' || $path === 'home.html') ? 'home.html' : $path;
-            // 確保拼接時不會出現多重斜線
-            return $urlBase . '/' . $displayLang . '/' . $finalPath;
-        }
-
-        return $urlBase . ($path === '' ? '' : '/' . $path);
+    // 2. 核心防禦：確保 basePath 不含實體路徑 (如 C:/...)
+    // 如果 basePath 意外包含了硬碟代號，則嘗試修復它
+    $safeBase = $basePath;
+    if (preg_match('/^[a-zA-Z]:/', $safeBase)) {
+        // 僅保留 URL 部分，移除實體路徑特徵
+        $safeBase = preg_replace('/^[a-zA-Z]:.*htdocs/i', '', $safeBase);
     }
+
+    $urlBase = rtrim($safeBase, '/');
+
+    // 3. 路徑與語系清洗
+    $path = trim($path, '/');
+    $currentLang = $lang ?? ($GLOBALS['lang'] ?? $defaultLang);
+    $validLang = in_array($currentLang, $supportedLangs) ? $currentLang : $defaultLang;
+    $displayLang = isset($langMap[$validLang]) ? $langMap[$validLang] : $validLang;
+
+    // 4. 補完 .html (排除首頁)
+    if ($path !== '' && !preg_match('/\.html$/i', $path)) {
+        $path .= '.html';
+    }
+
+    // 5. 組裝完整網址
+    if (defined('USE_MULTILANG') && USE_MULTILANG === true) {
+        $finalPath = ($path === '' || $path === 'home.html') ? 'home.html' : $path;
+        // 確保拼接時不會出現多重斜線
+        return $urlBase . '/' . $displayLang . '/' . $finalPath;
+    }
+
+    return $urlBase . ($path === '' ? '' : '/' . $path);
+  }
 }
 
 // 專案管理套件
@@ -58,11 +63,14 @@ if (!function_exists('__')) {
      * @return string
      */
     function __(string $key, ?string $lang = null): string {
-        global $uiLang, $lang; // $lang 代表目前使用的語系
-        $lang = $lang ?? 'zh';
-        if (isset($uiLang[$lang][$key])) {
-            return $uiLang[$lang][$key];
+        
+        global $uiLang, $lang; // 全域語系是 $lang （代表目前使用的語系）
+        $activeLang = $targetLang ?? $lang ?? 'zh'; // 使用 $activeLang 處理邏輯
+
+        if (isset($uiLang[$activeLang][$key])) {
+          return $uiLang[$activeLang][$key];
         }
+
         // fallback 英文或 key 本身
         return $uiLang['en'][$key] ?? $key;
     }

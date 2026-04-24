@@ -45,52 +45,53 @@ $uriPath = parse_url($uri, PHP_URL_PATH); // 這裡拿到的是 /git/wealthy-hil
 $rawPath = trim(str_replace($routerRoot, '', $uriPath), '/');
 
 // ===========================================
-// 多語言處理 (修正版：邏輯順序優化)
+// 多語言處理 (20260424 穩定優化版)
 // ===========================================
 if (USE_MULTILANG) {
-
-    // 1. 若路徑為空（純目錄），導向預設語系首頁
-    if ($rawPath === '') {
-        $startLang = ($defaultLang === 'zh') ? 'zh-TW' : $defaultLang;
-        header("Location: " . rtrim($basePath, '/') . '/' . $startLang . '/home.html', true, 301);
+    // 1. 先處理完全空白的根目錄 (e.g., domain.com/)
+    if ($rawPath === '' || $rawPath === 'index.html' || $rawPath === 'index.php') {
+        $mappedDefault = isset($langMapping[$defaultLang]) ? $langMapping[$defaultLang] : $defaultLang;
+        header("Location: " . rtrim($basePath, '/') . '/' . $mappedDefault . '/home.html', true, 301);
         exit;
     }
 
-    // 2. 拆解路徑，提取第一層作為語系
+    // 2. 拆解路徑取得語系段
     $segments = explode('/', $rawPath);
     $urlLang = isset($segments[0]) ? $segments[0] : '';
+    
+    $isMappedLang = isset($reverseLangMapping[$urlLang]);
+    $isDirectLang = in_array($urlLang, $supportedLangs);
 
-    // ⭐ 3. 核心映射邏輯：將外部顯示 (zh-TW) 轉回內部代碼 (zh)
-    if ($urlLang === 'zh-TW') {
-        $lang = 'zh';
+    if ($isMappedLang || $isDirectLang) {
+        // 設定內部語系變數
+        $lang = $isMappedLang ? $reverseLangMapping[$urlLang] : $urlLang;
+        
+        // 移除語系段落，取得功能路徑
+        array_shift($segments);
+        $subPath = implode('/', $segments);
+        $subPath = trim($subPath, '/');
+
+        // 3. 檢查功能路徑是否為空 (e.g., domain.com/en/ 或 domain.com/en/index.html)
+        if ($subPath === '' || $subPath === 'index' || $subPath === 'index.html' || $subPath === 'index.php') {
+            header("Location: " . rtrim($basePath, '/') . '/' . $urlLang . '/home.html', true, 301);
+            exit;
+        }
+        
+        // 💡 這裡之後 $subPath 可能是 "products.html" 或 "news/page/1.html"
     } else {
-        $lang = $urlLang;
-    }
-
-    // 4. 驗證語系是否存在
-    if (!in_array($lang, $supportedLangs)) {
+        // 4. 非法語系開頭處理 (例如 domain.com/xyz/...)
+        // 建議導向 404 或強制回首頁
         include __DIR__ . '/pages/404.php';
         exit;
     }
 
-    // 5. 移除語系段落，取得純粹的功能路徑 ($subPath)
-    array_shift($segments);
-    
-    // 🎯 修正：清理掉結尾斜線產生的空段落，並處理空路徑為 home
-    $subPath = implode('/', $segments);
-    $subPath = trim($subPath, '/'); // 移除多餘斜線
-
-    // 🔴 關鍵補強：如果網址是 /zh-TW/ 或 /zh-TW/index.html，統一指向 home
-    if ($subPath === '' || $subPath === 'index' || $subPath === 'index.html') {
-        $subPath = 'home';
-    }
-
 } else {
+    // 非多語系模式
     $lang = $defaultLang;
     $subPath = ($rawPath !== '' && $rawPath !== 'index' && $rawPath !== 'index.html') ? $rawPath : 'home';
 }
 
-// 最後統一去除 .html 標籤 (不論有無)
+// 統一清理 $subPath 的 .html 尾碼，方便後續的 preg_match 路由判斷
 $subPath = preg_replace('/\.html$/i', '', $subPath);
 
 // ===========================================

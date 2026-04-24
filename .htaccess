@@ -110,9 +110,20 @@ RewriteCond %{THE_REQUEST} \s/+([^\s?]+)\.php(?:[?\s]|$) [NC]
 RewriteCond %1 !^index$ [NC]
 RewriteRule ^ %1.html [R=301,L,QSD]
 
+# 禁止直接訪問 .php 檔案 (除了 index.php)
+# 這能防止使用者輸入 /pages/contact.php 繞過路由
+RewriteCond %{REQUEST_URI} !^/index\.php
+RewriteCond %{REQUEST_URI} \.php$
+RewriteRule ^(.*)$ - [F,L]
+
+# 萬用路由：將所有請求交給 index.php 處理
+# 我們不需要傳 ?path=，因為你的 PHP 已經會抓 REQUEST_URI 了
+RewriteRule ^(.*)$ index.php [L,QSA]
+
 # 2️⃣ 語系首頁規範化 (支援 zh-TW)
 # 如果網址是 /zh-TW/ 或 /zh-TW (不分大小寫)，強制 301 導向到 home.html
-RewriteRule ^(zh-TW|en)/?$ $1/home.html [R=301,L,NC]
+# RewriteRule ^(zh-TW|en|cn|ko)/?$ $1/home.html [R=301,L,NC]
+RewriteRule ^(zh-TW|en|cn|ko)/?$ %{REQUEST_URI}/home.html [R=301,L,NC]
 
 # 原有的首頁補完 (例如 /zh-TW/home -> /zh-TW/home.html)
 RewriteRule ^(zh-TW|en|cn|ko)/home/?$ $1/home.html [R=301,L,NC]
